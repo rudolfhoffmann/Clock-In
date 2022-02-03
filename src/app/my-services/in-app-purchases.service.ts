@@ -26,6 +26,7 @@ export class InAppPurchasesService {
     ENTERPRISE: 'enterprise',
   };
 
+  UNLIMITED_HISTORY = 1000000;
 
   SUB = {
     STANDARD_MONTH: {

@@ -14,7 +14,7 @@ import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
-import { Http } from '@capacitor-community/http';
+import { Http, HttpResponse } from '@capacitor-community/http';
 
 
 @Component({
@@ -215,6 +215,7 @@ export class HomeSupervisorPage implements OnInit {
         headers: {},
         data: postData,
       };
+
       Http.post(options).then(res => {
         this.loading = false;
         alert('Ihre Zugangsdaten wurden an Ihre E-Mail gesendet.');

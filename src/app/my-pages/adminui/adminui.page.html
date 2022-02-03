@@ -18,7 +18,6 @@
     <ion-item class="ion-no-padding">
       <ion-text style="width: 100%" (click)="modalStatusHistory(i)">
         {{data[deviceUuid].username}}<br>
-        <ion-text class="hints">UUID: {{deviceUuid}}</ion-text>
         <!-- blocked is a JSON-object with device UUIDs as keys. If true, device blocked. -->
         <ion-text *ngIf="blockedDevicesObj[deviceUuid]" class="hints"> (Blockiert)</ion-text>
       </ion-text>

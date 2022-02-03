@@ -11,7 +11,7 @@ import { GlobalFunctionsService } from 'src/app/my-services/global-functions.ser
 })
 export class ModalStatusHistoryPage implements OnInit {
   // ---- Member Variables -----
-  @Input() devicename;
+  @Input() user;
   @Input() checkins;
 
   /* Version 0.0.1 */

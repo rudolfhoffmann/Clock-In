@@ -149,13 +149,14 @@ export class AdminuiPage implements OnInit {
   // Create modal, in which status history of selected device is visualized.
   async modalStatusHistory(pos) {
     const deviceUuid: string = this.devicesUuid[pos];
+    const username = this.data[deviceUuid].username;
 
     const modal = await this.modalCtrl.create({
       component: ModalStatusHistoryPage,
       cssClass: 'modalFullscreenCss',
       showBackdrop: false,
       componentProps: {
-        devicename: deviceUuid,
+        user: username,
         checkins: this.data[deviceUuid].checkins,
       }
     });

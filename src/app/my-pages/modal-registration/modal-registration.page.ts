@@ -221,7 +221,7 @@ export class ModalRegistrationPage implements OnInit {
           }
           else if(product.id === this.iapService.SUB.ENTERPRISE_MONTH.ID || product.id === this.iapService.SUB.ENTERPRISE_ANNUAL.ID) {
             // 50 users and unlimited days (100.000 days)
-            updateCustomerConfigBranch['dataHistory'] = 100000;
+            updateCustomerConfigBranch['dataHistory'] = this.iapService.UNLIMITED_HISTORY;
             updateCustomerConfigBranch['numberUser'] = 50;
             updateCustomerConfigBranch['subscription'] = product.id;
           }

@@ -17,8 +17,11 @@
     <ion-item class="ion-no-padding">
       App Version: {{appVer}}
     </ion-item>
-    <ion-item class="ion-no-padding">
-      Dauer der Datenspeicherung: {{aboConfig.dataHistory}}
+    <ion-item *ngIf="!unlimited" class="ion-no-padding">
+      Dauer der Datenspeicherung: {{aboConfig.dataHistory}} Tage
+    </ion-item>
+    <ion-item *ngIf="unlimited" class="ion-no-padding">
+      Dauer der Datenspeicherung: unbegrenzt
     </ion-item>
     <ion-item *ngIf="!aboConfig.encrypt" class="ion-no-padding">
       Verschlüsselung: keine

@@ -10,7 +10,7 @@
 </ion-header>
 
 <ion-content class="ion-padding">
-  <h4>{{devicename}}</h4>
+  <h4>{{user}}</h4>
   <!-- Render Status History -->
   <ion-list *ngFor="let status of historyVisual; let i = index">
     <ion-item class="ion-no-padding ion-margin-vertical colorClockIn" *ngIf="checkins[objKeys[i]].checkin===true">
