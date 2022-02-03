@@ -1,5 +1,5 @@
 {
-	"appId": "de.innoapps.clockin.cap",
+	"appId": "de.innoapps.clockin",
 	"appName": "Clock-In",
 	"webDir": "www",
 	"bundledWebRuntime": false,

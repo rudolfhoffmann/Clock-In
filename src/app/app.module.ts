@@ -1,3 +1,5 @@
+// Google Sign In: https://devdactic.com/capacitor-google-sign-in/
+
 // Firebase
 // Installation: npm install firebase @angular/fire
 //import { initializeApp, provideFirebaseApp, getApp } from '@angular/fire/app';

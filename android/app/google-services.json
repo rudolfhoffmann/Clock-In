@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "65083167549",
+    "firebase_url": "https://checkin-innoapps-default-rtdb.europe-west1.firebasedatabase.app",
+    "project_id": "checkin-innoapps",
+    "storage_bucket": "checkin-innoapps.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:65083167549:android:56de5beb5b39d7badaeb54",
+        "android_client_info": {
+          "package_name": "de.innoapps.clockin"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "65083167549-qlonqh96hsp2h11dshfshtapvbmmc6du.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "de.innoapps.clockin",
+            "certificate_hash": "940c7ef830cf77c8f18c551daa47437c179fe222"
+          }
+        },
+        {
+          "client_id": "65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBOjXiYx883ricqQhAacJmMghB-JsHKpEA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

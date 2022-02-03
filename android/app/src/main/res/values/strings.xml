@@ -4,4 +4,5 @@
     <string name="title_activity_main">Clock-In</string>
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
+    <string name="server_client_id">65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com</string>
 </resources>

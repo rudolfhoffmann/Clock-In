@@ -30,6 +30,7 @@
     "@capacitor/ios": "^3.4.0",
     "@capacitor/keyboard": "1.2.1",
     "@capacitor/status-bar": "1.0.7",
+    "@codetrix-studio/capacitor-google-auth": "^3.0.2",
     "@ionic-native/app-version": "^5.36.0",
     "@ionic-native/core": "^5.36.0",
     "@ionic-native/file": "^5.36.0",
