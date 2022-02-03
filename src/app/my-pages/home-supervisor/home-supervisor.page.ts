@@ -13,6 +13,7 @@ import { ModalRegistrationPage } from '../modal-registration/modal-registration.
 import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 
 
 @Component({
@@ -40,6 +41,7 @@ export class HomeSupervisorPage implements OnInit {
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,  // Object to handle form validation.
     private globalFunctions: GlobalFunctionsService,
+    private storageService: LocalStorageService,
   ) {
     this.formGroup = this.formBuilder.group({
       // Define validations.
@@ -155,9 +157,11 @@ export class HomeSupervisorPage implements OnInit {
 
   // Read password for the customer branch from realtime database.
   // If password from realtime database matches the password from local storage, navigate to clockinui.
-  checkCredentialMatch() {
-    alert(this.adminPassword);
+  async checkCredentialMatch() {
     if(this.supervisorPassword === this.adminPassword) {
+      // Save account.
+      await this.storageService.set('customerBranch', this.customerBranch);
+
       // Redirect to admin UI.
       this.navigate2Adminui();
     } else {

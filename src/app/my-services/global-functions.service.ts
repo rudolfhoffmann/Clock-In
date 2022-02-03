@@ -7,6 +7,7 @@ import { AlertController, Platform, PopoverController, ToastController, ModalCon
 import { InformationComponent } from '../my-components/information/information.component';
 import { SimpleInputComponent } from '../my-components/simple-input/simple-input.component';
 import { ModalInfoPage } from '../my-pages/modal-info/modal-info.page';
+import { File } from '@ionic-native/file/ngx';
 
 
 export interface AlertInfo {
@@ -47,6 +48,7 @@ export class GlobalFunctionsService {
     private toastCtrl: ToastController,
     private modalCtrl: ModalController,
     private plt: Platform,
+    private file: File,
   ) { }
 
 
@@ -312,6 +314,41 @@ export class GlobalFunctionsService {
 
     });
   }
+
+
+  writeFileToDevice(subPath, fileName, fileType, fileContent, successFct) {
+    let path = '';
+    if(this.plt.is('android')) {
+      path = this.file.externalRootDirectory + subPath;
+    }
+    else if (this.plt.is('ios')) {
+      path = this.file.tempDirectory;
+    }
+
+    this.file.writeFile(path, fileName, fileContent, { replace: false, }).then(entry => {
+      successFct(path);
+    }).catch(err => {
+      if(err.code === 12) {
+        // If file already available, ask for permission to overwrite.
+        const alertInfo: AlertInfo = {
+          header: 'Datei überschreiben',
+          subHeader: '',
+          message: 'Möchten Sie die Datei ' + fileName + ' ersetzen?'
+        };
+
+        const arrowFunction = () => {
+          this.file.writeFile(path, fileName, fileContent, { replace: true, }).then(entry => {
+            successFct(path);
+          });
+        };
+
+        this.createSimpleAlert(alertInfo, arrowFunction);
+      }
+    });
+
+  }
+
+
 
   getKeyByValue(object, value) {
     return Object.keys(object).find(key => object[key] === value);
