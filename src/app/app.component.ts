@@ -18,6 +18,11 @@ import { ModalConsentPage } from './my-pages/modal-consent/modal-consent.page';
 import { Device } from '@capacitor/device';
 
 
+import '@codetrix-studio/capacitor-google-auth';
+import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
+
+
+
 
 
 @Component({
@@ -78,6 +83,16 @@ export class AppComponent {
 
 
     this.createConsentModal();
+
+    if(this.plt.is('android')) {
+      GoogleAuth.signIn().then(googleUser => {
+        alert(googleUser.email);
+      }).catch(e => {
+        alert(JSON.stringify(e));
+        // Back
+      });
+    }
+
   }
   // Constructor end
 
