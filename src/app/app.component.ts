@@ -180,7 +180,7 @@ export class AppComponent {
       },*/
       {
         title : 'Abmelden',
-        url   : '/home',
+        url   : '/home-scanner',
         icon  : 'log-out-outline',
         id: this.SIDE_MENU_ID.LOGOUT,
       },
