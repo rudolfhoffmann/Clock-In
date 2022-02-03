@@ -25,6 +25,9 @@ import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { SignInWithApple }from '@ionic-native/sign-in-with-apple/ngx';
 import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 import { File } from '@ionic-native/file/ngx';
+import { FileOpener } from '@ionic-native/file-opener/ngx';
+import { AndroidPermissions } from '@ionic-native/android-permissions/ngx';
+import { NgxQRCodeModule } from '@techiediaries/ngx-qrcode';
 
 import { InformationComponent } from './my-components/information/information.component';
 import { BlockingComponent } from './my-components/blocking/blocking.component';
@@ -37,13 +40,14 @@ import { ActionMenuAdminComponent } from './my-components/action-menu-admin/acti
 
 
 
+
 @NgModule({
   declarations: [AppComponent, BlockingComponent, InformationComponent, UsernameComponent, IntroSliderComponent,
     SubscriptionComponent, SimpleInputComponent, ActionMenuAdminComponent ],
   entryComponents: [],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, ],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, NgxQRCodeModule ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  QRScanner, Storage, AppVersion, SignInWithApple, InAppPurchase2, File ],
+  QRScanner, Storage, AppVersion, SignInWithApple, InAppPurchase2, File, FileOpener, AndroidPermissions ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

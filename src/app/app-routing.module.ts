@@ -63,6 +63,10 @@ const routes: Routes = [
     path: 'modal-status-history',
     loadChildren: () => import('./my-pages/modal-status-history/modal-status-history.module').then( m => m.ModalStatusHistoryPageModule)
   },
+  {
+    path: 'qrgenerator',
+    loadChildren: () => import('./my-pages/qrgenerator/qrgenerator.module').then( m => m.QrgeneratorPageModule)
+  },
 ];
 
 @NgModule({
