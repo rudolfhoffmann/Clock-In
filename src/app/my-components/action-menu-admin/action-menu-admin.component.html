@@ -1,3 +1,13 @@
-<p>
-  action-menu-admin works!
-</p>
+<ion-content class="ion-no-padding">
+  <ion-list *ngFor="let action_item of actionlist">
+    <ion-item class="stylingMenu" (click)="closeActionMenu(action_item.action)">
+      <ion-text>
+        {{action_item.title}}
+        <ion-text *ngIf="action_item.hint!==''" class="hints">
+          <br>{{action_item.hint}}
+        </ion-text>
+      </ion-text>
+      <ion-icon class="stylingMenu" [name]="action_item.icon" slot="start"></ion-icon>
+    </ion-item>
+  </ion-list>
+</ion-content>
