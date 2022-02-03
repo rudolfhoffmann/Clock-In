@@ -89,7 +89,7 @@ export class AppComponent {
 
     this.createConsentModal();
 
-    if(this.plt.is('android')) {
+    /*if(this.plt.is('android')) {
       GoogleAuth.signIn().then(googleUser => {
         alert(googleUser.email);
       }).catch(e => {
@@ -109,7 +109,7 @@ export class AppComponent {
       }).catch((error: AppleSignInErrorResponse) => {
         alert(error.code + ' ' + error.localizedDescription);
       });
-    }
+    }*/
 
   }
   // Constructor end

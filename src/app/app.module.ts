@@ -1,7 +1,7 @@
 // Google Sign In: https://devdactic.com/capacitor-google-sign-in/
 
 // Apple Sign In using @ionic-native/sign-in-with-apple.
-// Important!!! Under App --> Target --> Signing & Capabilities --> Add new capability --> Sign in with Apple
+// Important!!! Go to: App --> Target --> Signing & Capabilities --> Add new capability --> Sign in with Apple
 
 // Firebase
 // Installation: npm install firebase @angular/fire
