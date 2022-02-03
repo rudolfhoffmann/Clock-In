@@ -21,6 +21,10 @@ import { Device } from '@capacitor/device';
 import '@codetrix-studio/capacitor-google-auth';
 import { GoogleAuth } from '@codetrix-studio/capacitor-google-auth';
 
+import { SignInWithApple, ASAuthorizationAppleIDRequest }from '@ionic-native/sign-in-with-apple/ngx';
+import { AppleSignInErrorResponse, AppleSignInResponse }from '@ionic-native/sign-in-with-apple/ngx';
+
+
 
 
 
@@ -58,6 +62,7 @@ export class AppComponent {
     private navCtrl: NavController,
     private modalCtrl: ModalController,
     private storageService: LocalStorageService,
+    private signInWithApple: SignInWithApple
   ) {
     Device.getId().then(devideId => {
       this.uuid = devideId.uuid;
@@ -90,6 +95,19 @@ export class AppComponent {
       }).catch(e => {
         alert(JSON.stringify(e));
         // Back
+      });
+    }
+    else if(this.plt.is('ios')) {
+      this.signInWithApple.signin({
+        requestedScopes: [
+          ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+          ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
+        ]
+      }).then((appleUser: AppleSignInResponse) => {
+        // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
+        alert(appleUser.email);
+      }).catch((error: AppleSignInErrorResponse) => {
+        alert(error.code + ' ' + error.localizedDescription);
       });
     }
 

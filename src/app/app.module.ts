@@ -1,5 +1,8 @@
 // Google Sign In: https://devdactic.com/capacitor-google-sign-in/
 
+// Apple Sign In using @ionic-native/sign-in-with-apple.
+// Important!!! Under App --> Target --> Signing & Capabilities --> Add new capability --> Sign in with Apple
+
 // Firebase
 // Installation: npm install firebase @angular/fire
 //import { initializeApp, provideFirebaseApp, getApp } from '@angular/fire/app';
@@ -23,6 +26,7 @@ import { IntroSliderComponent } from './my-components/intro-slider/intro-slider.
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
+import { SignInWithApple }from '@ionic-native/sign-in-with-apple/ngx';
 
 
 
@@ -31,7 +35,7 @@ import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  QRScanner, Storage, AppVersion ],
+  QRScanner, Storage, AppVersion, SignInWithApple ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
