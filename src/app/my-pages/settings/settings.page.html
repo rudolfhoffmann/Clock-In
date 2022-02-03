@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>Einstellungen</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-list *ngFor="let setting_item of settingsList" class="ion-no-padding ion-no-margin">
+    <ion-item (click)="edit(setting_item.id)" class="ion-no-padding ion-no-margin">
+      <ion-text>
+        {{setting_item.title}}
+        <ion-text *ngIf="setting_item.value!==''" class="italic-values">
+          <br>
+          {{setting_item.value}}
+        </ion-text>
+      </ion-text>
+    </ion-item>
+  </ion-list>
+</ion-content>

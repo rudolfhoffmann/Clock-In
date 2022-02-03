@@ -67,6 +67,14 @@ const routes: Routes = [
     path: 'qrgenerator',
     loadChildren: () => import('./my-pages/qrgenerator/qrgenerator.module').then( m => m.QrgeneratorPageModule)
   },
+  {
+    path: 'settings',
+    loadChildren: () => import('./my-pages/settings/settings.module').then( m => m.SettingsPageModule)
+  },
+  {
+    path: 'modal-blocked-devices',
+    loadChildren: () => import('./my-pages/modal-blocked-devices/modal-blocked-devices.module').then( m => m.ModalBlockedDevicesPageModule)
+  },
 ];
 
 @NgModule({

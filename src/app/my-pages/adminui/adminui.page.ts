@@ -346,4 +346,9 @@ export class AdminuiPage implements OnInit {
     this.globalFunctions.writeFileToDevice(subPath, fileName, '', content, successFct);
   }
 
+
+  openSettings() {
+    this.navCtrl.navigateForward('/settings');
+  }
+
 }

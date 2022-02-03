@@ -36,6 +36,7 @@ import { IntroSliderComponent } from './my-components/intro-slider/intro-slider.
 import { SubscriptionComponent } from './my-components/subscription/subscription.component';
 import { SimpleInputComponent } from './my-components/simple-input/simple-input.component';
 import { ActionMenuAdminComponent } from './my-components/action-menu-admin/action-menu-admin.component';
+import { AdminPasswordComponent } from './my-components/admin-password/admin-password.component';
 
 
 
@@ -43,7 +44,7 @@ import { ActionMenuAdminComponent } from './my-components/action-menu-admin/acti
 
 @NgModule({
   declarations: [AppComponent, BlockingComponent, InformationComponent, UsernameComponent, IntroSliderComponent,
-    SubscriptionComponent, SimpleInputComponent, ActionMenuAdminComponent ],
+    SubscriptionComponent, SimpleInputComponent, ActionMenuAdminComponent, AdminPasswordComponent, ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, NgxQRCodeModule ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
