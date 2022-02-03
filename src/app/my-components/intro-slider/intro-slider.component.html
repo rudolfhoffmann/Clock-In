@@ -1,0 +1,52 @@
+<ion-content class="ion-padding">
+  <!-- PROBLEM: Pager not reappearing after false or after close. Why?
+       SOLUTION: user pager="true" as seen below and use this.slides.update() in ngOnInit. Only this configuration works.
+       Otherwise, next()/prev() not working or bullet points not shown.
+ -->
+  <ion-slides class="ion-margin-vertical" #slidesID pager="true" (ionSlideWillChange)="slideChanged($event)" [options]="slideOptions">
+    <ion-slide class="ion-slide-css">
+      <ion-text>
+        <h4>Ziel der App</h4>
+        <p>
+          Mit "Clock-In Scanner" können QR-Codes gescannt werden, die mit der App <br><b>"Clock-In Supervisor"</b><br> erstellt werden.
+          Der Zeitpunkt des Scannens wird erfasst und gespeichert.
+          Zum Beispiel kann der Beginn und das Ende der Arbeitszeit erfasst werden.
+          Der Supervisor kann die Scans einsehen und somit die erfassten Arbeitszeiten überwachen.
+        </p>
+      </ion-text>
+    </ion-slide>
+    <ion-slide class="ion-slide-css">
+      <ion-text>
+        <h4>Loslegen</h4>
+        <p>
+          Der Supervisor erstellt mit der App <br><b>"Clock-In Supervisor"</b><br> ein Konto und gibt Ihnen die Kontozugangsdaten weiter.
+          Mit diesen Kontozugangsdaten können Sie sich anmelden und die vom Supervisor erstellten QR-Codes scannen.
+          Der Supervisor kann die Scans der Benutzer, die mit seinen Kontozugangsdaten angemeldet sind, überwachen.<br>
+          Nach dem ersten Anmelden erscheint ein Pop-Up, in dem der Benutzername eingegeben werden muss.
+        </p>
+      </ion-text>
+    </ion-slide>
+    <ion-slide class="ion-slide-css">
+      <ion-text>
+        <h4>QR-Code scannen</h4>
+        <p>
+          Beim Scannen des QR-Codes werden der Zeitpunkt des Scannens und der Inhalt des QR-Codes gespeichert.
+          Beim ersten Scannen eines QR-Codes wird dieser als angestempelt "Clock-In" registriert. Beim nächsten Scannen
+          des QR-Codes wird dieser abgestempelt "Clock-Out". Somit können beispielsweise Arbeitszeiten an- und später
+          abgestempelt werden. Es können mehrere QR-Codes gleichzeitig angestempelt werden.
+        </p>
+      </ion-text>
+    </ion-slide>
+  </ion-slides>
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size=6>
+        <ion-button (click)="prev()" expand="block" color="secondary">{{firstButtonName}}</ion-button>
+      </ion-col>
+      <ion-col size=6>
+        <ion-button (click)="next()" expand="block" color="secondary">{{lastButtonName}}</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
+

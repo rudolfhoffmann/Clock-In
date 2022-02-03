@@ -1,0 +1,11 @@
+<ion-content class="ion-padding">
+  <h1>ClockIn</h1>
+  <!--<p>Some Content</p>-->
+</ion-content>
+
+<ion-footer class="ion-padding ion-no-border">
+  <p style="color: black;">Unter diesem Link können Sie unsere <a (click)="createInfoModal(1, 'Datenschutzerklärung')">Datenschutzerklärung</a> einsehen</p>
+  <ion-checkbox style="vertical-align: middle;" [(ngModel)]="consented"></ion-checkbox>
+  <span style="color: black;" class="ion-margin-start"><a (click)="createInfoModal(2, 'Nutzungsbedingungen')">Nutzungsbedingungen</a> zustimmen</span>
+  <ion-button class="ion-margin-vertical" (click)="submitConsent()" [disabled]="!consented" expand="block" color="secondary">Los geht's</ion-button>
+</ion-footer>

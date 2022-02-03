@@ -1,0 +1,15 @@
+<ion-content class="ion-padding">
+  <h3>{{heading}}</h3>
+  <br>
+  <ion-text>{{message}}</ion-text>
+  <br>
+  <form [formGroup]="formGroup" (ngSubmit)="save()">
+    <ion-item class="ion-no-padding">
+      <ion-label position="floating">{{heading}}</ion-label>
+      <ion-input formControlName="usernameCtrl" type="text" autocapitalize="words" placeholder="Benutzername" (keyup.Enter)="save()"></ion-input>
+    </ion-item>
+
+    <ion-button type="submit" expand="full" color="secondary">Speichern</ion-button>
+  </form>
+
+</ion-content>

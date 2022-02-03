@@ -1,0 +1,13 @@
+{
+	"appId": "de.innoapps.clockin.cap",
+	"appName": "Clock-In",
+	"webDir": "www",
+	"bundledWebRuntime": false,
+	"npmClient": "npm",
+	"plugins": {
+		"SplashScreen": {
+			"launchShowDuration": 0
+		}
+	},
+	"cordova": {}
+}

@@ -24,3 +24,18 @@
 @import "~@ionic/angular/css/text-alignment.css";
 @import "~@ionic/angular/css/text-transformation.css";
 @import "~@ionic/angular/css/flex-utils.css";
+
+/* My CSS Module Declarations (can be used in html -> <div class="my-module-class"> */
+@import "~@ionic/angular/css/my-colors.css";
+@import "~@ionic/angular/css/validation.css";
+@import "~@ionic/angular/css/my-style.css";
+
+/* My CSS Declarations */
+@import "./app/my-stylesheets/my-components.css";
+
+/* My SCSS Declarations */
+@import "./app/my-stylesheets/my-components.scss";
+
+
+
+

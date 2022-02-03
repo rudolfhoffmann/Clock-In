@@ -1,6 +1,13 @@
 {
-	"appId": "io.ionic.starter",
+	"appId": "de.innoapps.clockin.cap",
 	"appName": "Clock-In",
 	"webDir": "www",
-	"bundledWebRuntime": false
+	"bundledWebRuntime": false,
+  "npmClient": "npm",
+  "plugins": {
+    "SplashScreen": {
+      "launchShowDuration": 0
+    }
+  },
+  "cordova": {}
 }

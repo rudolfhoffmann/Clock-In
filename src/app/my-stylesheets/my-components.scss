@@ -1,0 +1,49 @@
+/*
+With SCSS-File, the ionic components can be edited using e.g. &::part(content).
+Styling ".ion-slide-css p {...}" not working (don't know why). But working in CSS-File.
+*/
+
+.promptCss /* .popover-content */ {
+  &::part(content) {
+    width: 90%;
+    max-height: 70%;
+    position: absolute !important;
+    top: 20% !important;  /* bottom is 10% as height is 70%. */
+    left: 5% !important;  /* right is also 5% as width is 90%. */
+  }
+}
+
+.blockingCss /* .popover-content */ {
+  &::part(content) {
+    width: 90%;
+    max-height: 70%;
+    position: absolute !important;
+    top: 20% !important;  /* bottom is 10% as height is 70%. */
+    left: 5% !important;  /* right is also 5% as width is 90%. */
+  }
+}
+
+.introSliderCss /* .popover-content */ {
+  &::part(content) {
+    width: 90%;
+    max-height: 70%;
+    position: absolute !important;
+    top: 20% !important;  /* bottom is 10% as height is 70%. */
+    left: 5% !important;  /* right is also 5% as width is 90%. */
+  }
+}
+
+
+
+.modalFullscreenCss /* .modal-wrapper */ {
+  &::part(content) {
+    position: absolute !important;
+    top: 0 !important;
+    left: 0 !important;
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+}
+

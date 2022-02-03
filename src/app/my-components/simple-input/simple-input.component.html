@@ -1,0 +1,46 @@
+
+<ion-content class="ion-padding">
+  <h3>{{header}}</h3>
+  <br>
+  <ion-text>{{message}}</ion-text>
+  <br>
+
+
+  <!-- If this is the dialog to export records, create radio-group to choose file format. -->
+  <ion-radio-group *ngIf="exportRecords" [(ngModel)]="radioValue">
+    <ion-list-header>
+      <ion-label>Datei-Format</ion-label>
+    </ion-list-header>
+
+    <ion-item>
+      <ion-label>JSON</ion-label>
+      <ion-radio slot="start" value="json"></ion-radio>
+    </ion-item>
+
+    <!--
+    <ion-item>
+      <ion-label>CSV</ion-label>
+      <ion-radio slot="start" value="csv"></ion-radio>
+    </ion-item>
+    -->
+  </ion-radio-group>
+
+
+  <ion-item class="ion-no-padding">
+    <ion-label position="floating">Dateiname</ion-label>
+    <ion-input type="text" (ionChange)="validateName()" [(ngModel)]="filename" placeholder="Dateiname"></ion-input>
+  </ion-item>
+  <span [hidden]="nameValid" class="val-error">{{valFeedback}}</span>
+
+  <ion-grid class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size=6>
+        <ion-button (click)="cancel()" expand="full" color="secondary">Abbrechen</ion-button>
+      </ion-col>
+      <ion-col size=6>
+        <ion-button [disabled]="!nameValid" (click)="save()" expand="full" color="secondary">Speichern</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+</ion-content>

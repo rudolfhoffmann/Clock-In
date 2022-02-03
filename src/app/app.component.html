@@ -1,3 +1,21 @@
 <ion-app>
-  <ion-router-outlet></ion-router-outlet>
+  <ion-menu style="--width: 70%;" side="end" contentId="main" type="overlay">
+    <ion-content>
+      <ion-item lines="none"></ion-item>  <!-- Free space, otherwise on iPhone this range is covered and cannot be used. -->
+      <ion-list *ngFor="let page of navigate">
+        <!-- Remove lines and append manually a border-bottom, because otherwise, there is no line under the icons.
+             Put the <ion-text> content into a <div> tag and resize the width of this tag to 24px, since this is
+             the size of the default-size of the icons. Otherwise, the title are not on a vertical line.  -->
+        <ion-item (click)="navigateTo(page.url, page.id)" style="border-bottom: solid 1px #9d9fa6;" class="stylingMenu" lines="none">
+          <ion-icon *ngIf="page.icon!==''" class="stylingMenu" [name]="page.icon" slot="start"></ion-icon>
+          <div *ngIf="page.icon===''" style="width: 24px; text-align: center;" class="stylingMenu">
+            <ion-text>§</ion-text>
+          </div>
+          {{page.title}}
+        </ion-item>
+      </ion-list>
+    </ion-content>
+  </ion-menu>
+
+  <ion-router-outlet id="main"></ion-router-outlet>
 </ion-app>

@@ -1,0 +1,53 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>ClockIn</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <form [formGroup]="formGroup" (ngSubmit)="login2Account()">
+    <ion-item class="ion-no-padding">
+      <ion-label position="floating">Kontoname</ion-label>
+      <ion-input formControlName="customerBranchCtrl" type="text"></ion-input>
+    </ion-item>
+
+    <ion-item class="ion-no-padding">
+      <ion-label position="floating">Passwort</ion-label>
+      <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
+      <ion-input formControlName="branchPasswordCtrl" type="text" (keyup.Enter)="login2Account()"></ion-input>
+    </ion-item>
+
+    <ion-text class="hints">
+      Anmeldung erforderlich. Die Anmeldedaten erhalten Sie vom Administrator von Clock-In (Supervisor).
+      Genauere Information finden Sie unten unter "Wie funktioniert diese App".
+    </ion-text>
+    <ion-button [disabled]="!formGroup.valid" type="submit" expand="full" color="secondary">
+      Anmelden
+      <ion-icon name="log-in-outline" slot="start"></ion-icon>
+    </ion-button>
+  </form>
+
+  <br>
+  <ion-button (click)="createIntroSliderPopover()" class="ion-no-padding" fill="clear">Wie funktioniert diese App?</ion-button>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-no-padding ion-no-margin">
+    <ion-grid class="ion-padding">
+      <ion-row>
+        <ion-col size="auto">
+          <ion-text color="primary" (click)="navigateTo('/imprint')" class="ion-no-padding" fill="clear">Impressum</ion-text>
+        </ion-col>
+        <ion-col style="text-align: right;">
+          <ion-text color="primary" (click)="createInfoModal(1, 'Datenschutzerklärung')" class="ion-no-padding">Datenschutz</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col>
+          <ion-text color="primary" (click)="createInfoModal(2, 'Nutzungsbedingungen')" class="ion-no-padding">Nutzungsbedingungen</ion-text>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>

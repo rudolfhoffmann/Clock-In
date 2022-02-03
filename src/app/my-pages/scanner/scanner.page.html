@@ -1,0 +1,21 @@
+<ion-header>
+  <ion-toolbar color="translucent">
+    <ion-buttons slot="start">
+      <ion-back-button></ion-back-button>
+    </ion-buttons>
+    <ion-title>QR-Scanner</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<!-- ion-content is transparent (see in scanner.page.scss) -->
+
+<ion-footer>
+  <ion-button (click)="switchLightOff()" color="transparent" [hidden]="!lightOn"
+              style="position: fixed; bottom: 10px; left: 0; right: 0;" fill="clear">
+    <ion-icon slot="icon-only" name="flash-outline"></ion-icon>
+  </ion-button>
+  <ion-button (click)="switchLightOn()" color="transparent" [hidden]="lightOn"
+              style="position: fixed; bottom: 10px; left: 0; right: 0;" fill="clear">
+    <ion-icon slot="icon-only" name="flash-off-outline"></ion-icon>
+  </ion-button>
+</ion-footer>

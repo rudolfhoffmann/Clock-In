@@ -1,0 +1,54 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Stempeln</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <ion-item class="ion-no-padding">
+    <ion-row>
+      <ion-col size="auto">
+        <ion-label position="floating">Kommentare</ion-label>
+        <ion-textarea [(ngModel)]="comments" placeholder="z.B. Aufgabe, Name, Bemerkungen, etc."></ion-textarea>
+      </ion-col>
+      <ion-col size=2>
+        <ion-button (click)="infoPopover($event)" fill="clear">
+          <ion-icon name="information-circle-outline" size="small" slot="icon-only"></ion-icon>
+        </ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-item>
+
+  <ion-button expand="full" (click)="openScanner()" color="secondary">
+    QR-Code scannen
+    <ion-icon name="scan-outline" slot="start"></ion-icon>
+  </ion-button>
+</ion-content>
+
+<ion-footer>
+  <ion-toolbar class="ion-no-padding ion-no-margin">
+    <ion-grid [hidden]="hideGrid" class="ion-padding">
+      <ion-row>
+        <ion-col>
+          <h4>Registrierte Zeiten</h4>
+          <ion-text class="hints">Hier werden die QR-Codes aufgelistet, die aktuell angestempelt sind!</ion-text>
+        </ion-col>
+      </ion-row>
+      <ion-row>
+        <ion-col size=4>
+          <b>Clock-In</b>
+        </ion-col>
+        <ion-col size=8>
+          <b>QR-Code</b>
+        </ion-col>
+      </ion-row>
+      <ion-row *ngFor="let checkin of lastCheckins; let i = index">
+        <ion-col size=4>{{timestampVis[i]}}</ion-col>
+        <ion-col size=8>{{checkin}}</ion-col>
+      </ion-row>
+    </ion-grid>
+  </ion-toolbar>
+</ion-footer>
