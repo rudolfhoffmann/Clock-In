@@ -1,3 +1,42 @@
-<p>
-  subscription works!
-</p>
+<ion-content class="ion-padding">
+  <h3>Abo wählen</h3>
+  <ion-grid *ngIf="subValue !== 'starter'" class="ion-no-padding ion-no-margin">
+    <ion-row>
+      <ion-col size=6>
+        <ion-button (click)="setSubPeriod('month')" expand="full" [color]="subPeriod === 'month' ? 'primary': 'tertiary'">Monatlich</ion-button>
+      </ion-col>
+      <ion-col size=6>
+        <ion-button (click)="setSubPeriod('annual')" expand="full" [color]="subPeriod === 'annual' ? 'primary': 'tertiary'">Jährlich</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+
+  <ion-slides class="ion-margin-vertical" #slidesIDSub pager="true" (ionSlideWillChange)="slideChanged()" [options]="slideOptions">
+      <ion-slide *ngFor="let subVal of subValueList; let i = index;" class="ion-slide-css ion-no-padding">
+        <ion-card class="ion-no-margin" color="tertiary" style="width: 100%">
+          <h3>
+            {{sub[subVal].name}}
+          </h3>
+          <ion-text>
+            <ion-text class="font-price">{{sub[subVal].pricing.total}} {{currency}}</ion-text>
+            <ion-text class="font-price-desc">/Monat inkl. MwSt.</ion-text>
+            <ion-text *ngIf="subPeriod==='month'" class="font-price-desc"><br>Monatliche Abrechnung</ion-text>
+            <ion-text *ngIf="subPeriod==='annual'" class="font-price-desc"><br>Jährliche Abrechnung</ion-text>
+            <ion-text *ngIf="sub[subVal].pricing.total > 0" class="font-price-desc"><br><b>14 Tage kostenlose Testversion</b></ion-text>
+          </ion-text>
+
+          <br>
+          <ion-item color="inherit" class="ion-no-padding">
+            <ion-text class="ion-margin-vertical">
+              <p *ngFor="let benefit of sub[subVal].benefits">{{benefit}}</p>
+            </ion-text>
+          </ion-item>
+        </ion-card>
+      </ion-slide>
+  </ion-slides>
+
+  <br>
+  <ion-button (click)="choose()" expand="full" color="secondary">Auswählen</ion-button>
+
+</ion-content>
+

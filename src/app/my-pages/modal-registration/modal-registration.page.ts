@@ -89,7 +89,10 @@ export class ModalRegistrationPage implements OnInit {
     this.realtimeDB = getDatabase();
     this.refDB = ref(this.realtimeDB);
 
-    this.formGroup.setValue({emailCtrl: this.email});
+    // Use patchValue() to set only some values. With setValue() all values have to be set.
+    this.formGroup.patchValue({
+      emailCtrl: this.email
+    });
 
     // If subscription already available (owned status), then only new standard account can be created.
     this.subChosenSubscription = this.iapService.getSubChosenState().subscribe(chosen => {
