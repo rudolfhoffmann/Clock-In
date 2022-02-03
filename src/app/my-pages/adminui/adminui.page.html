@@ -1,0 +1,44 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button fill="clear">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-buttons slot="end">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>Verwaltung</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+  <h4>Auswahl des Scan-Geräts</h4>
+  <ion-list *ngFor="let deviceUuid of devicesUuid; let i = index">
+    <ion-item class="ion-no-padding">
+      <ion-text style="width: 100%" (click)="modalStatusHistory(i)">
+        {{data[deviceUuid].username}}<br>
+        <ion-text class="hints">UUID: {{deviceUuid}}</ion-text>
+        <!-- blocked is a JSON-object with device UUIDs as keys. If true, device blocked. -->
+        <ion-text *ngIf="blockedDevicesObj[deviceUuid]" class="hints"> (Blockiert)</ion-text>
+      </ion-text>
+      <ion-button (click)="openActionMenu(deviceUuid, i, $event)" slot="end" fill="clear">
+        <ion-icon name="ellipsis-vertical-outline" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-spinner style="vertical-align: middle;" [hidden]="!devicesLoading" [paused]="!devicesLoading"></ion-spinner>
+  <ion-text [hidden]="!devicesLoading">  Daten werden abgerufen</ion-text>
+  <ion-text [hidden]="devicesFound">Keine Geräte gefunden</ion-text>
+
+</ion-content>
+
+<ion-footer class="ion-no-border">
+  <ion-toolbar class="ion-no-padding ion-no-margin">
+    <ion-button class="ion-margin-vertical" expand="full" (click)="openQRCodeGenerator()" color="secondary">
+      QR-Code generieren
+      <ion-icon name="qr-code-outline" slot="start"></ion-icon>
+    </ion-button>
+  </ion-toolbar>
+</ion-footer>

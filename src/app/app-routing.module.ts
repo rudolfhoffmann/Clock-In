@@ -55,6 +55,14 @@ const routes: Routes = [
     path: 'modal-registration',
     loadChildren: () => import('./my-pages/modal-registration/modal-registration.module').then( m => m.ModalRegistrationPageModule)
   },
+  {
+    path: 'adminui',
+    loadChildren: () => import('./my-pages/adminui/adminui.module').then( m => m.AdminuiPageModule)
+  },
+  {
+    path: 'modal-status-history',
+    loadChildren: () => import('./my-pages/modal-status-history/modal-status-history.module').then( m => m.ModalStatusHistoryPageModule)
+  },
 ];
 
 @NgModule({
