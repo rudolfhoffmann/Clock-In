@@ -137,7 +137,7 @@ export class SettingsPage implements OnInit {
       },
       {
         id: this.ACTION_ID.ADMIN,
-        title: 'Administrator Passwort ändern',
+        title: 'Supervisor Passwort ändern',
         value: '',
       },
       // Changing account name not possible for this app, because renaming of keys not possible.

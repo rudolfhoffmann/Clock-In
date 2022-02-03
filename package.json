@@ -22,6 +22,7 @@
     "@angular/router": "~13.0.0",
     "@awesome-cordova-plugins/app-version": "^5.38.0",
     "@awesome-cordova-plugins/core": "^5.38.0",
+    "@capacitor-community/http": "^1.4.1",
     "@capacitor/android": "^3.4.0",
     "@capacitor/app": "1.1.0",
     "@capacitor/core": "3.4.0",

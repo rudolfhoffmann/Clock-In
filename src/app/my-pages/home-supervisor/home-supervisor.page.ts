@@ -14,6 +14,7 @@ import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
+import { Http } from '@capacitor-community/http';
 
 
 @Component({
@@ -32,7 +33,10 @@ export class HomeSupervisorPage implements OnInit {
   supervisorPassword = '';
 
   customerBranch = '';
+  branchPassword = '';
   adminPassword = '';
+
+  loading = false;
 
   constructor(
     private signInWithApple: SignInWithApple,
@@ -113,6 +117,7 @@ export class HomeSupervisorPage implements OnInit {
       const refCustomerBranchConfig = ref(this.realtimeDB, this.customerBranch + '/' + environment.dbConfigBranch);
       const configData = (await get(refCustomerBranchConfig)).val();
       this.adminPassword = configData.adminPassword;
+      this.branchPassword = configData.branchPassword;
 
       this.formGroup.patchValue({
         supervisorEmailCtrl: this.supervisorEmail,
@@ -184,4 +189,40 @@ export class HomeSupervisorPage implements OnInit {
   navigate2Adminui() {
     this.navCtrl.navigateRoot('/adminui');
   }
+
+
+  passwordForgotten() {
+    if(this.customerBranch === '') {
+      alert('Es ist kein Konto mit der angegeben E-Mail vorhanden.');
+    }
+    else {
+      const postData = {
+
+        token: environment.clockinHttp,  // Token to verify, that php file was called from this app and not by someone else.
+        to: this.supervisorEmail,
+        subject: `Ihr Passwort für das ClockIn-Konto "${this.customerBranch}"`,
+        message: `<p>Ihre ClockIn-Zugangsdaten lauten:</p> \
+                  <p>Kontoname: <strong>${this.customerBranch}</strong><br>Konto Passwort: <strong>${this.branchPassword}</strong></p>\
+                  <p>Loggen Sie sich mit diesen Zugangsdaten ein. Unter Einstellungen können Sie Ihr Passwort ändern. \
+                  Um Änderungen vorzunehmen, müssen Sie sich mit dem Administrator Passwort authentifizieren:</p>\
+                  <p>Administrator Passwort: <strong>${this.adminPassword}</strong></p>`,
+      };
+
+      this.loading = true;
+
+      const options = {
+        url: this.globalFunctions.MY_SERVER_URL,
+        headers: {},
+        data: postData,
+      };
+      Http.post(options).then(res => {
+        this.loading = false;
+        alert('Ihre Zugangsdaten wurden an Ihre E-Mail gesendet.');
+      }).catch(e => {
+        this.loading = false;
+        alert(JSON.stringify(e));
+      });
+    }
+  }
+
 }
