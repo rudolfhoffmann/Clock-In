@@ -47,6 +47,14 @@ const routes: Routes = [
     path: 'home-scanner',
     loadChildren: () => import('./my-pages/home-scanner/home-scanner.module').then( m => m.HomeScannerPageModule)
   },
+  {
+    path: 'home-supervisor',
+    loadChildren: () => import('./my-pages/home-supervisor/home-supervisor.module').then( m => m.HomeSupervisorPageModule)
+  },
+  {
+    path: 'modal-registration',
+    loadChildren: () => import('./my-pages/modal-registration/modal-registration.module').then( m => m.ModalRegistrationPageModule)
+  },
 ];
 
 @NgModule({

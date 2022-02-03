@@ -73,7 +73,6 @@ export class HomeScannerPage implements OnInit {
       const refDB = ref(this.realtimeDB, this.customerBranch + '/' + environment.dbConfigBranch + '/' + environment.dbBranchPassword);
       get(refDB).then((snapshot) => {
         const pw = snapshot.val();
-
         if(pw === this.branchPassword) {
           // If credentials correct, write them to local storage.
           this.setAccountCredentials();

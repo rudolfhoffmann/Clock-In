@@ -7,11 +7,6 @@ import { PopoverController } from'@ionic/angular';
 import { LocalStorageService } from '../../my-services/local-storage.service';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
-import { ref, getDatabase, set, get, update } from '@firebase/database';
-
-import { environment } from 'src/environments/environment';
-import { BlockingComponent } from 'src/app/my-components/blocking/blocking.component';
-import { UsernameComponent } from 'src/app/my-components/username/username.component';
 import { IntroSliderComponent } from 'src/app/my-components/intro-slider/intro-slider.component';
 
 import { Device } from '@capacitor/device';
@@ -24,9 +19,6 @@ import { Device } from '@capacitor/device';
 export class HomePage implements OnInit {
   // ----- Member Variables -----
   uuid: string;
-
-  realtimeDB;
-  dbRef: any;  // Reference to database.
 
 
   constructor(
@@ -42,7 +34,6 @@ export class HomePage implements OnInit {
 
   async ionViewDidEnter() {
     this.uuid = (await Device.getId()).uuid;
-    this.realtimeDB = getDatabase();
   }
 
 

@@ -27,15 +27,17 @@ import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
 import { SignInWithApple }from '@ionic-native/sign-in-with-apple/ngx';
-
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
+import { SubscriptionComponent } from './my-components/subscription/subscription.component';
 
 
 @NgModule({
-  declarations: [AppComponent, BlockingComponent, InformationComponent, UsernameComponent, IntroSliderComponent, ],
+  declarations: [AppComponent, BlockingComponent, InformationComponent, UsernameComponent, IntroSliderComponent,
+    SubscriptionComponent, ],
   entryComponents: [],
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, FormsModule, ReactiveFormsModule, ],
   providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-  QRScanner, Storage, AppVersion, SignInWithApple ],
+  QRScanner, Storage, AppVersion, SignInWithApple, InAppPurchase2, ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
