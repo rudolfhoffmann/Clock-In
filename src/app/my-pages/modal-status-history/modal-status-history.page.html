@@ -1,9 +1,31 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>modal-status-history</ion-title>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button (click)="closeModal()">
+        <ion-icon name="arrow-back" slot="icon-only"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title>Zeiterfassung</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
-
+<ion-content class="ion-padding">
+  <h4>{{devicename}}</h4>
+  <!-- Render Status History -->
+  <ion-list *ngFor="let status of historyVisual; let i = index">
+    <ion-item class="ion-no-padding ion-margin-vertical colorClockIn" *ngIf="checkins[objKeys[i]].checkin===true">
+      {{status.checkin}}: {{status.date}} - {{status.time}} Uhr
+      <br><br>
+       Inhalt des QR-Codes: {{status.content}}
+      <br><br>
+      Kommentare: {{status.comments}}
+    </ion-item>
+    <ion-item class="ion-no-padding ion-margin-vertical colorClockOut" *ngIf="checkins[objKeys[i]].checkin===false">
+      {{status.checkin}}: {{status.date}} - {{status.time}} Uhr
+      <br><br>
+      Inhalt des QR-Codes: {{status.content}}
+      <br><br>
+      Kommentare: {{status.comments}}
+    </ion-item>
+  </ion-list>
 </ion-content>
