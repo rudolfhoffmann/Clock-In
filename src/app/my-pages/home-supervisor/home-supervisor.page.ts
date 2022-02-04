@@ -38,6 +38,7 @@ export class HomeSupervisorPage implements OnInit {
 
   loading = false;
 
+
   constructor(
     private signInWithApple: SignInWithApple,
     private plt: Platform,
@@ -64,16 +65,28 @@ export class HomeSupervisorPage implements OnInit {
   }
 
 
-  ionViewDidEnter() {
-    // Authenticate with Android or iOS. If authentication not working, navigate back to home (root).
-    if(this.plt.is('android')) {
-      this.googleAuth();
+  async ionViewDidEnter() {
+    this.supervisorEmail = await this.storageService.get('supervisorEmail');
+
+    // If supervisorEmail not stored in local storage, authentication process is necessary.
+    if(this.supervisorEmail === '' || this.supervisorEmail === null || this.supervisorEmail === undefined) {
+      // Authenticate with Android or iOS. If authentication not working, navigate back to home (root).
+      if(this.plt.is('android')) {
+        this.googleAuth();
+      }
+      else if(this.plt.is('ios')) {
+        this.appleAuth();
+      }
+      else {
+        this.navigate2Home();
+      }
     }
-    else if(this.plt.is('ios')) {
-      this.appleAuth();
-    }
+    // If supervisorEmail stored in local storage, don't authenticate and fetch corresponding password to automatically log in.
     else {
-      this.navigate2Home();
+      // Fetch adminPassword from DB and log in.
+      this.supervisorPassword = this.adminPassword;
+
+      this.checkCredentialMatch();  // Login.
     }
   }
 
@@ -124,6 +137,7 @@ export class HomeSupervisorPage implements OnInit {
       });
     }
     else {
+      alert(this.supervisorEmail);
       this.createRegistrationModal();
     }
   }
@@ -164,12 +178,17 @@ export class HomeSupervisorPage implements OnInit {
   // If password from realtime database matches the password from local storage, navigate to clockinui.
   async checkCredentialMatch() {
     if(this.supervisorPassword === this.adminPassword) {
-      // Save account.
+      // Save account credentials, except of supervisor password (this one is secret).
       await this.storageService.set('customerBranch', this.customerBranch);
+      await this.storageService.set('branchPassword', this.branchPassword);
+      await this.storageService.set('supervisorEmail', this.supervisorEmail);
 
       // Redirect to admin UI.
       this.navigate2Adminui();
-    } else {
+    }
+    // If credentialMatch fails, clear local storage.
+    else {
+      this.storageService.clear();
       alert('Supervisor-Email und Passwort stimmen nicht überein!');
     }
   }
