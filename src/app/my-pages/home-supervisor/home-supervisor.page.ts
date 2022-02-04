@@ -216,8 +216,8 @@ export class HomeSupervisorPage implements OnInit {
     }
     else {
       const postData = {
-
         token: environment.clockinHttp,  // Token to verify, that php file was called from this app and not by someone else.
+
         to: this.supervisorEmail,
         subject: `Ihr Passwort für das ClockIn-Konto "${this.customerBranch}"`,
         message: `<p>Ihre ClockIn-Zugangsdaten lauten:</p> \
@@ -232,12 +232,13 @@ export class HomeSupervisorPage implements OnInit {
       const options = {
         url: this.globalFunctions.MY_SERVER_URL,
         headers: {},
-        data: postData,
+        data: {test: 'test'},
       };
 
       Http.post(options).then(res => {
         this.loading = false;
         alert('Ihre Zugangsdaten wurden an Ihre E-Mail gesendet.');
+        alert(JSON.stringify(res));
       }).catch(e => {
         this.loading = false;
         alert(JSON.stringify(e));
