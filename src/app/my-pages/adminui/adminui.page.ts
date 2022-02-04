@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/dot-notation */
 import { Component, OnInit, NgZone } from '@angular/core';
 
 import { NavController, ModalController, PopoverController, Platform } from '@ionic/angular';
@@ -14,6 +15,7 @@ import { SimpleInputComponent } from 'src/app/my-components/simple-input/simple-
 import { File } from '@ionic-native/file/ngx';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { Device } from '@capacitor/device';
+import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
 
 
 
@@ -47,6 +49,8 @@ export class AdminuiPage implements OnInit {
 
   customerBranch: string;
 
+  subIdSubscription;
+
   constructor(
     private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -56,6 +60,7 @@ export class AdminuiPage implements OnInit {
     private plt: Platform,
     private file: File,
     private storageService: LocalStorageService,
+    private iapService: InAppPurchasesService,
   ) { }
 
   async ngOnInit() {
@@ -100,6 +105,50 @@ export class AdminuiPage implements OnInit {
 
         this.deleteOldData(this.data, historyDays);
       });
+    });
+
+
+    this.checkSubscription();
+  }
+
+  ionViewDidLeave() {
+    this.subIdSubscription.unsubscribe();
+  }
+
+
+
+  // Check owned products (which subscription) and update parameters.
+  checkSubscription() {
+    this.iapService.setupListeners();
+
+    this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
+      // If cancelled, update config parameters to Business Standard.
+      const updateConfigBranch = {};
+      if(subId === '') {
+        updateConfigBranch['numberUser'] = 1;
+        updateConfigBranch['dataHistory'] = 42;
+        updateConfigBranch['subscription'] = 'clockin.business.starter';
+      }
+      else if(subId === this.iapService.SUB.STANDARD_MONTH.ID || subId === this.iapService.SUB.STANDARD_ANNUAL.ID) {
+        // 5 users and 90 days
+        updateConfigBranch['dataHistory'] = 90;
+        updateConfigBranch['numberUser'] = 5;
+        updateConfigBranch['subscription'] = subId;
+      }
+      else if(subId === this.iapService.SUB.PLUS_MONTH.ID || subId === this.iapService.SUB.PLUS_ANNUAL.ID) {
+        // 20 users and 365 days
+        updateConfigBranch['dataHistory'] = 365;
+        updateConfigBranch['numberUser'] = 20;
+        updateConfigBranch['subscription'] = subId;
+      }
+      else if(subId === this.iapService.SUB.ENTERPRISE_MONTH.ID || subId === this.iapService.SUB.ENTERPRISE_ANNUAL.ID) {
+        // 50 users and unlimited days (100.000 days)
+        updateConfigBranch['dataHistory'] = this.iapService.UNLIMITED_HISTORY;
+        updateConfigBranch['numberUser'] = 50;
+        updateConfigBranch['subscription'] = subId;
+      }
+
+      update(this.dbRefConfig, updateConfigBranch);
     });
   }
 

@@ -65,6 +65,7 @@ export class InAppPurchasesService {
 
   private subChosen: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private subCancelled: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  private subId: BehaviorSubject<string> = new BehaviorSubject('');
 
   constructor(
     private store: InAppPurchase2,
@@ -77,6 +78,9 @@ export class InAppPurchasesService {
   }
   getSubCancelledState() {
     return this.subCancelled.asObservable();
+  }
+  getSubIdState() {
+    return this.subId.asObservable();
   }
 
 
@@ -133,6 +137,9 @@ export class InAppPurchasesService {
       //alert(product.id);
       // Set next value of subChosen to "true" to notify observer about state.
       this.subChosen.next(true);
+      // Set product-id.
+      this.subId.next(product.id);
+
     }).cancelled(() => {
       this.subCancelled.next(true);
     }).error(productError => {

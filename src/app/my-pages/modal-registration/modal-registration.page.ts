@@ -206,6 +206,7 @@ export class ModalRegistrationPage implements OnInit {
       if(this.subscriptionTotalPrice > 0) {
         this.iapService.order(this.subId);
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
+        /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {
           if(product.id === this.iapService.SUB.STANDARD_MONTH.ID || product.id === this.iapService.SUB.STANDARD_ANNUAL.ID) {
             // 5 users and 90 days
@@ -229,6 +230,7 @@ export class ModalRegistrationPage implements OnInit {
           this.updateAccount(updateCustomerConfigBranch, updateAccountEmail);
           this.closeModal(data);
         });
+        */
       }
       // If no purchase made, just leave registration page.
       else {

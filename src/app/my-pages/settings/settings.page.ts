@@ -47,6 +47,10 @@ export class SettingsPage implements OnInit {
   dbRefUsername: any;
   dbRefConfig: any;
 
+  subId = '';
+  subName = 'BUSINESS STANDARD';
+  subPeriod = '';
+
   constructor(
     private plt: Platform,
     private actRoute: ActivatedRoute,
@@ -75,6 +79,7 @@ export class SettingsPage implements OnInit {
         this.blockedDevices.push(dev);
       }
     });
+    this.showSubscription();
 
     this.uuid = (await Device.getId()).uuid;
     this.usernamePath = this.customerBranch + '/' + environment.dbDevicesBranch + '/' + this.uuid + '/' + environment.dbUsername;
@@ -88,6 +93,21 @@ export class SettingsPage implements OnInit {
       this.defineSettingsList();
     });
 
+  }
+
+  showSubscription() {
+    this.subId = this.config.subscription;
+
+    const subIdSplit = this.subId.split('.');
+    //this.subName = (`${subIdSplit[1]} ${subIdSplit[2]}`).toUpperCase();
+    if(subIdSplit.length === 4) {
+      if(subIdSplit[3] === 'month') {
+        this.subPeriod = '(Monatlich Abrechnung)';
+      }
+      if(subIdSplit[3] === 'annual') {
+        this.subPeriod = '(Jährliche Abrechnung)';
+      }
+    }
   }
 
 
@@ -155,14 +175,14 @@ export class SettingsPage implements OnInit {
         value: this.config.branchPassword,
       },
       {
-        id: this.ACTION_ID.SUBSCRIPTION,
-        title: 'Abo anzeigen',
-        value: '',  // Value
-      },
-      {
         id: this.ACTION_ID.BLOCKED_DEV,
         title: 'Blockierte Geräte verwalten',
         value: '',
+      },
+      {
+        id: this.ACTION_ID.SUBSCRIPTION,
+        title: 'Abo',
+        value: this.subName + ' ' + this.subPeriod,  // Value
       },
     ];
   }

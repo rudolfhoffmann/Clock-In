@@ -83,17 +83,16 @@ export class HomeSupervisorPage implements OnInit {
     }
     // If supervisorEmail stored in local storage, don't authenticate and fetch corresponding password to automatically log in.
     else {
-      // Fetch adminPassword from DB and log in.
-      this.supervisorPassword = this.adminPassword;
-
-      this.checkCredentialMatch();  // Login.
+      const loginAuto = true;
+      this.checkUserEmail(this.supervisorEmail, loginAuto);
     }
   }
 
 
   googleAuth() {
     GoogleAuth.signIn().then(googleUser => {
-      this.checkUserEmail(googleUser.email);
+      const loginAuto = false;
+      this.checkUserEmail(googleUser.email, false);
     }).catch( error => {
       // Logout?
       this.navigate2Home();
@@ -108,7 +107,8 @@ export class HomeSupervisorPage implements OnInit {
       ]
     }).then((appleUser: AppleSignInResponse) => {
       // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
-      this.checkUserEmail(appleUser.email);
+      const loginAuto = false;
+      this.checkUserEmail(appleUser.email, loginAuto);
     }).catch((error: AppleSignInErrorResponse) => {
       //alert(error.code + ' ' + error.localizedDescription);
       // Logout?
@@ -118,7 +118,7 @@ export class HomeSupervisorPage implements OnInit {
 
 
   // Check, if userEmail already exist. If exist, enable login. Else register.
-  async checkUserEmail(userEmail) {
+  async checkUserEmail(userEmail, loginAuto) {
     this.supervisorEmail = userEmail;
     const accountEmail = (await get(this.refAccountEmail)).val();
     const emails = Object.values(accountEmail);
@@ -132,12 +132,20 @@ export class HomeSupervisorPage implements OnInit {
       this.adminPassword = configData.adminPassword;
       this.branchPassword = configData.branchPassword;
 
-      this.formGroup.patchValue({
-        supervisorEmailCtrl: this.supervisorEmail,
-      });
+      if(loginAuto) {
+        // Fetch adminPassword from DB and log in.
+        this.supervisorPassword = this.adminPassword;
+        this.checkCredentialMatch();  // Login.
+      }
+      // Set supervisorEmail to input field.
+      else {
+        this.formGroup.patchValue({
+          supervisorEmailCtrl: this.supervisorEmail,
+        });
+      }
+
     }
     else {
-      alert(this.supervisorEmail);
       this.createRegistrationModal();
     }
   }
