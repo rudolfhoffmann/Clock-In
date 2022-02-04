@@ -8,7 +8,7 @@
       <ion-text>
         <h4>Ziel der App</h4>
         <p>
-          Mit "Clock-In Scanner" können QR-Codes gescannt werden, die mit der App <br><b>"Clock-In Supervisor"</b><br> erstellt werden.
+          Mit <b>Clock-In</b> können QR-Codes gescannt werden, die mit dieser App erstellt werden.
           Der Zeitpunkt des Scannens wird erfasst und gespeichert.
           Zum Beispiel kann der Beginn und das Ende der Arbeitszeit erfasst werden.
           Der Supervisor kann die Scans einsehen und somit die erfassten Arbeitszeiten überwachen.
@@ -19,10 +19,23 @@
       <ion-text>
         <h4>Loslegen</h4>
         <p>
-          Der Supervisor erstellt mit der App <br><b>"Clock-In Supervisor"</b><br> ein Konto und gibt Ihnen die Kontozugangsdaten weiter.
-          Mit diesen Kontozugangsdaten können Sie sich anmelden und die vom Supervisor erstellten QR-Codes scannen.
-          Der Supervisor kann die Scans der Benutzer, die mit seinen Kontozugangsdaten angemeldet sind, überwachen.<br>
-          Nach dem ersten Anmelden erscheint ein Pop-Up, in dem der Benutzername eingegeben werden muss.
+          Beim erstmaligen Öffnen von <b>Clock-In Supervisor</b> ist eine Authentifizierung und Registrierung erforderlich.
+          Beim Registrieren erstellt der Supervisor ein Konto und gibt die Kontozugangsdaten weiteren Benutzern.
+          Mit diesen Kontozugangsdaten können sich alle Benutzer anmelden und die vom Supervisor erstellten QR-Codes scannen.
+          Der Supervisor kann die Scans der Benutzer, die mit seinen Kontozugangsdaten angemeldet sind, überwachen und
+          weitere Einstellungen des Accounts vornehmen.
+        </p>
+      </ion-text>
+    </ion-slide>
+    <ion-slide class="ion-slide-css">
+      <ion-text>
+        <h4>QR-Code generieren</h4>
+        <p>
+          Nach dem Anmelden als Supervisor können QR-Codes unter <b>QR-Code generieren</b> erstellt werden.
+          Dabei gibt der Supervisor den Inhalt an, den der QR-Code enthalten soll, z.B. Arbeitszeit im Büro.
+          <br>
+          Diesen QR-Code kann der Administrator ausdrucken und den Benutzern zur Verfügung stellen,
+          sodass die Benutzer diesen zukünftig scannen können.
         </p>
       </ion-text>
     </ion-slide>
@@ -30,7 +43,8 @@
       <ion-text>
         <h4>QR-Code scannen</h4>
         <p>
-          Beim Scannen des QR-Codes werden der Zeitpunkt des Scannens und der Inhalt des QR-Codes gespeichert.
+          Nach dem Anmelden bei Clock-In Scanner können QR-Codes gescannt werden.
+          Beim Scannen werden der Zeitpunkt und der Inhalt des QR-Codes gespeichert.
           Beim ersten Scannen eines QR-Codes wird dieser als angestempelt "Clock-In" registriert. Beim nächsten Scannen
           des QR-Codes wird dieser abgestempelt "Clock-Out". Somit können beispielsweise Arbeitszeiten an- und später
           abgestempelt werden. Es können mehrere QR-Codes gleichzeitig angestempelt werden.

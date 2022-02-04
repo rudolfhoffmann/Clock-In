@@ -28,7 +28,7 @@ export class IntroSliderComponent implements OnInit {
   lastButtonName = 'Weiter';
 
   // Set manually, since this.slides.length() not working for me.
-  numberSlides = 3;
+  numberSlides = 4;
   currentIndex = 0;
 
   constructor(
