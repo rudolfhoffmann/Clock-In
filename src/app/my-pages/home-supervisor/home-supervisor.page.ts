@@ -12,7 +12,7 @@ import { AppleSignInErrorResponse, AppleSignInResponse }from '@ionic-native/sign
 import { ModalRegistrationPage } from '../modal-registration/modal-registration.page';
 import { environment } from 'src/environments/environment';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { Http, HttpResponse } from '@capacitor-community/http';
 
@@ -108,7 +108,24 @@ export class HomeSupervisorPage implements OnInit {
     }).then((appleUser: AppleSignInResponse) => {
       // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
       const loginAuto = false;
-      this.checkUserEmail(appleUser.email, loginAuto);
+      if(appleUser.email !== '') {
+        this.checkUserEmail(appleUser.email, loginAuto);
+      }
+      // If app already used Apple Sign In, then the email is empty.
+      // Workaround: Go to Settings --> Your Profile --> Password & Security --> Apps using Apple-ID --> Clock In --> Remove it
+      else {
+        const alertInfo: AlertInfo = {
+          header: 'Apple-ID konnte nicht abgerufen werden!',
+          subHeader: '',
+          message: 'Um dieses Problem zu beheben gehen Sie zu den Einstellungen Ihres Systems und navigieren Sie zu: \
+                    Apple-ID > Passwort & Sicherheit > Apps, die Apple-ID verwenden > Clock In. \
+                    Führen Sie die Aktion "Apple-ID nicht mehr verwenden aus" und gehen Sie erneut zu Clock-In Supervisor. ',
+        };
+        const arrowFunction = () => {
+          this.navigate2Home();
+        };
+        this.globalFunctions.createSimpleAlert(alertInfo, arrowFunction);
+      }
     }).catch((error: AppleSignInErrorResponse) => {
       //alert(error.code + ' ' + error.localizedDescription);
       // Logout?
