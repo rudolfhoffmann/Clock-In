@@ -31,6 +31,7 @@ export class HomeSupervisorPage implements OnInit {
 
   supervisorEmail = '';
   supervisorPassword = '';
+  isAuth = false;
 
   customerBranch = '';
   branchPassword = '';
@@ -67,9 +68,10 @@ export class HomeSupervisorPage implements OnInit {
 
   async ionViewDidEnter() {
     this.supervisorEmail = await this.storageService.get('supervisorEmail');
+    this.isAuth = await this.storageService.get('isAuth');
 
-    // If supervisorEmail not stored in local storage, authentication process is necessary.
-    if(this.supervisorEmail === '' || this.supervisorEmail === null || this.supervisorEmail === undefined) {
+    // If isAuth not stored in local storage, authentication process is necessary.
+    if(this.isAuth === false || this.isAuth === null || this.isAuth === undefined) {
       // Authenticate with Android or iOS. If authentication not working, navigate back to home (root).
       if(this.plt.is('android')) {
         this.googleAuth();
@@ -92,7 +94,7 @@ export class HomeSupervisorPage implements OnInit {
   googleAuth() {
     GoogleAuth.signIn().then(googleUser => {
       const loginAuto = false;
-      this.checkUserEmail(googleUser.email, false);
+      this.checkUserEmail(googleUser.email, loginAuto);
     }).catch( error => {
       // Logout?
       this.navigate2Home();
