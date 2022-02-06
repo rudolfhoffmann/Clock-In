@@ -214,6 +214,7 @@ export class ModalRegistrationPage implements OnInit {
       const data = {
         registerSuccess: true,
         supervisorPassword: this.adminPassword,
+        customerBranch: this.customerBranch,
       };
 
       // Subscribe

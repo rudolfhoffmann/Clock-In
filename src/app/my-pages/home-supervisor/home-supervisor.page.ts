@@ -188,6 +188,7 @@ export class HomeSupervisorPage implements OnInit {
         // If successfully registered, get account credentials for supervisor and login with them.
         this.supervisorPassword = res.data.supervisorPassword;
         this.adminPassword = this.supervisorPassword;
+        this.customerBranch = res.data.customerBranch;
 
         this.formGroup.setValue({
           supervisorEmailCtrl: this.supervisorEmail,
