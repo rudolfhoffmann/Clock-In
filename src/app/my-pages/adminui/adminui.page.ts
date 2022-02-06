@@ -68,6 +68,7 @@ export class AdminuiPage implements OnInit {
     this.uuid = (await Device.getId()).uuid;
 
     this.customerBranch = await this.storageService.get('customerBranch');  // Fetch customerBranch stored in local storage after login.
+    alert(this.customerBranch);
     this.devicesPath = await this.customerBranch + '/' + environment.dbDevicesBranch;
     this.configPath = await this.customerBranch + '/' + environment.dbConfigBranch;
     this.realtimeDB = getDatabase();

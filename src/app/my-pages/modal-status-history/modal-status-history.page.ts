@@ -32,6 +32,7 @@ export class ModalStatusHistoryPage implements OnInit {
 
   objKeys = [];
 
+  noCapture = true;
 
   constructor(
     private globalFunctions: GlobalFunctionsService,
@@ -41,6 +42,10 @@ export class ModalStatusHistoryPage implements OnInit {
   ngOnInit() {
     this.objKeys = Object.keys(this.checkins);
     this.objKeys.reverse();  // Reverse list, in order to sort the content from new to old.
+
+    if(this.objKeys.length > 0) {
+      this.noCapture = false;
+    };
 
     this.objKeys.forEach(key => {
       const status = this.checkins[key];

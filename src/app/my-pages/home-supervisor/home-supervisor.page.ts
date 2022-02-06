@@ -32,6 +32,7 @@ export class HomeSupervisorPage implements OnInit {
   supervisorEmail = '';
   supervisorPassword = '';
   isAuth = false;
+  loginAuto = false;
 
   customerBranch = '';
   branchPassword = '';
@@ -69,6 +70,7 @@ export class HomeSupervisorPage implements OnInit {
   async ionViewDidEnter() {
     this.supervisorEmail = await this.storageService.get('supervisorEmail');
     this.isAuth = await this.storageService.get('isAuth');
+    this.loginAuto = await this.storageService.get('loginAuto');
 
     // If isAuth not stored in local storage, authentication process is necessary.
     if(this.isAuth === false || this.isAuth === null || this.isAuth === undefined) {
@@ -85,8 +87,7 @@ export class HomeSupervisorPage implements OnInit {
     }
     // If supervisorEmail stored in local storage, don't authenticate and fetch corresponding password to automatically log in.
     else {
-      const loginAuto = true;
-      this.checkUserEmail(this.supervisorEmail, loginAuto);
+      this.checkUserEmail(this.supervisorEmail, this.loginAuto);
     }
   }
 
@@ -209,6 +210,8 @@ export class HomeSupervisorPage implements OnInit {
       await this.storageService.set('customerBranch', this.customerBranch);
       await this.storageService.set('branchPassword', this.branchPassword);
       await this.storageService.set('supervisorEmail', this.supervisorEmail);
+      await this.storageService.set('isAuth', true);
+      await this.storageService.set('loginAuto', true);
 
       // Redirect to admin UI.
       this.navigate2Adminui();
