@@ -15,7 +15,7 @@ import { environment } from 'src/environments/environment';
 
 import { getDatabase, set, ref, push, onValue, get, query, limitToLast, equalTo, orderByChild, child } from '@firebase/database';
 
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { Device } from '@capacitor/device';
 
 
@@ -251,7 +251,12 @@ export class FeedbackPage implements OnInit {
     if(this.globalFunctions.getAuthFromQRCode(qrcode)===environment.qrAuth) {
       return true;
     } else {
-      alert('QR-Code ungülitg');
+      const alertInfo: AlertInfo = {
+        header: 'QR-Code ungültig',
+        subHeader: '',
+        message: 'Der QR-Code kann nicht verarbeitet werden. Verwenden Sie QR-Codes, die mit dieser App erstellt werden',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
       return false;
     }
   }

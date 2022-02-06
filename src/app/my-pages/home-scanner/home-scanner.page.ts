@@ -4,7 +4,7 @@ import { PopoverController } from'@ionic/angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 
 import { LocalStorageService } from '../../my-services/local-storage.service';
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
 import { ref, getDatabase, set, get, update } from '@firebase/database';
 
@@ -84,10 +84,23 @@ export class HomeScannerPage implements OnInit {
           // Reason: New GUI structure. Start directly from clock-in UI and navigate to admin UI from side menu.
           this.openClockInUI();
         } else {
-          alert('Anmeldename und Passwort stimmen nicht überein!');
+          const alertInfo: AlertInfo = {
+            header: 'Authentifizierung fehlgeschlagen',
+            subHeader: '',
+            message: 'Supervisor-Email und Passwort stimmen nicht überein!',
+          };
+          const arrowFunction = () => {
+            //this.storageService.logout('/home-scanner', undefined);
+          };
+          this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
         }
       }).catch(() => {
-        alert('Anmeldedaten konnten nicht abgerufen werden. Möglicherweise ist keine Internetverbindung vorhanden!');
+        const alertInfo: AlertInfo = {
+          header: 'Anmeldung fehlgeschlagen',
+          subHeader: '',
+          message: 'Anmeldedaten konnten nicht abgerufen werden. Möglicherweise ist keine Internetverbindung vorhanden!',
+        };
+        this.globalFunctions.createInfoAlert(alertInfo, () => {});
       });
     }
   }

@@ -189,6 +189,26 @@ export class GlobalFunctionsService {
   }
 
 
+  createInfoAlert(alertInfo: AlertInfo, arrowFunction) {
+    this.alertCtrl.create({
+      header: alertInfo.header,
+      subHeader: alertInfo.subHeader,
+      message: alertInfo.message,
+      buttons: [
+        {
+          // If confirmed, execute arrow function (in other languages also called lambda function).
+          text: 'Verstanden',
+          handler: () => {
+            arrowFunction();
+          }
+        },
+      ]
+    }).then(res => {
+      res.present();
+    });
+  }
+
+
   createInputDialog(alertInfo: AlertInfo, inputList, arrowFunction) {
     this.alertCtrl.create({
       header: alertInfo.header,

@@ -4,6 +4,7 @@ import { ModalController, PopoverController } from '@ionic/angular';
 import { ref, getDatabase, set, get, update } from '@firebase/database';
 import { environment } from 'src/environments/environment';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
 @Component({
   selector: 'app-admin-password',
@@ -24,6 +25,7 @@ export class AdminPasswordComponent implements OnInit {
     private popoverCtrl: PopoverController,
     private storageService: LocalStorageService,
     private formBuilder: FormBuilder,  // Object to handle form validation.
+    private globalFunctions: GlobalFunctionsService,
   ) {
     this.formGroup = this.formBuilder.group({
       // Define validations.
@@ -57,10 +59,20 @@ export class AdminPasswordComponent implements OnInit {
 
   async save() {
     if(this.oldPassword !== this.formGroup.get('oldPasswordCtrl').value) {
-      alert('Altes Passwort nicht korrekt.');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Alter Passwort nicht korrekt!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else if(!this.matchPassword()) {
-      alert('Neue Passwörter stimmen nicht überein');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Neue Passwörter stimmen nicht überein!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else {
       const newPassword = this.formGroup.get('newPasswordCtrl').value;

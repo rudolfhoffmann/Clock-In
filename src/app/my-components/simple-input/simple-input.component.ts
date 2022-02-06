@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 
 import { PopoverController } from '@ionic/angular';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
 @Component({
   selector: 'app-simple-input',
@@ -21,6 +22,7 @@ export class SimpleInputComponent implements OnInit {
 
   constructor(
     private popoverCtrl: PopoverController,
+    private globalFunctions: GlobalFunctionsService,
   ) { }
 
   ngOnInit() {
@@ -40,7 +42,12 @@ export class SimpleInputComponent implements OnInit {
     };
 
     if(this.filename===undefined || this.filename==='') {
-      alert('Kein Dateiname angegeben.');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Kein Dateiname angegen!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else {
       await this.popoverCtrl.dismiss(data);

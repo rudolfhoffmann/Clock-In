@@ -115,7 +115,7 @@ export class HomeSupervisorPage implements OnInit {
       // Workaround: Go to Settings --> Your Profile --> Password & Security --> Apps using Apple-ID --> Clock In --> Remove it
       else {
         const alertInfo: AlertInfo = {
-          header: 'Apple-ID konnte nicht abgerufen werden!',
+          header: 'Apple-ID konnte nicht abgerufen werden',
           subHeader: '',
           message: 'Um dieses Problem zu beheben gehen Sie zu den Einstellungen Ihres Systems und navigieren Sie zu: \
                     Apple-ID > Passwort & Sicherheit > Apps, die Apple-ID verwenden > Clock In. \
@@ -124,7 +124,7 @@ export class HomeSupervisorPage implements OnInit {
         const arrowFunction = () => {
           this.navigate2Home();
         };
-        this.globalFunctions.createSimpleAlert(alertInfo, arrowFunction);
+        this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       }
     }).catch((error: AppleSignInErrorResponse) => {
       //alert(error.code + ' ' + error.localizedDescription);
@@ -211,10 +211,17 @@ export class HomeSupervisorPage implements OnInit {
       // Redirect to admin UI.
       this.navigate2Adminui();
     }
-    // If credentialMatch fails, clear local storage.
+    // If credentialMatch fails, clear local storage by performing logout function.
     else {
-      this.storageService.clear();
-      alert('Supervisor-Email und Passwort stimmen nicht überein!');
+      const alertInfo: AlertInfo = {
+        header: 'Authentifizierung fehlgeschlagen',
+        subHeader: '',
+        message: 'Supervisor-Email und Passwort stimmen nicht überein!',
+      };
+      const arrowFunction = () => {
+
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
     }
   }
 
@@ -237,7 +244,13 @@ export class HomeSupervisorPage implements OnInit {
 
   passwordForgotten() {
     if(this.customerBranch === '') {
-      alert('Es ist kein Konto mit der angegeben E-Mail vorhanden.');
+      const alertInfo: AlertInfo = {
+        header: 'Konto nicht vorhanden',
+        subHeader: '',
+        message: 'Es ist kein Konto mit der angegeben E-Mail vorhanden!',
+      };
+      const arrowFunction = () => {};
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
     }
     else {
       const postData = {
@@ -262,7 +275,12 @@ export class HomeSupervisorPage implements OnInit {
 
       Http.post(options).then(res => {
         this.loading = false;
-        alert('Ihre Zugangsdaten wurden an Ihre E-Mail gesendet.');
+        const alertInfo: AlertInfo = {
+          header: 'Zugangsdaten gesendet',
+          subHeader: '',
+          message: 'Ihre Zugangsdaten wurden an Ihre E-Mail gesendet!',
+        };
+        this.globalFunctions.createInfoAlert(alertInfo, () => {});
         alert(JSON.stringify(res));
       }).catch(e => {
         this.loading = false;

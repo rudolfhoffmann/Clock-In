@@ -42,10 +42,12 @@ export class LocalStorageService {
 
 
   public async logout(pageurl, navigationExtra) {
-    // On logout, clear all data in storage. Just remember consent property.
-    const consented = this.get('consented');
+    // On logout, clear all data in storage. Just remember consent and supervisorEmail property.
+    const consented = await this.get('consented');
+    const supervisorEmail = await this.get('supervisorEmail');
     this.clear();
     this.set('consented', consented);
+    this.set('supervisorEmail', supervisorEmail);
     this.navCtrl.navigateRoot(pageurl, navigationExtra);
   }
 }

@@ -8,7 +8,7 @@ import { Validators, FormBuilder, FormGroup } from '@angular/forms';
 import { environment } from 'src/environments/environment';
 
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { IAPProductOptions, InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 import { SubscriptionComponent } from 'src/app/my-components/subscription/subscription.component';
 import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
@@ -161,13 +161,28 @@ export class ModalRegistrationPage implements OnInit {
 
     // If passwords match and customer branch not already available, complete registration. Otherwise, show alert.
     if(customerBranchAvailable) {
-      alert('Dieser Kontoname wird bereits verwendet. Wählen Sie einen anderen Kontonamen aus.');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Dieser Kontoname wird bereits verwendet. Wählen Sie einen anderen Kontonamen aus!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else if(emailAvail) {
-      alert('Diese E-Mail wird bereits für ein anderes Konto verwendet. Wählen Sie eine andere E-Mail aus.');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Diese E-Mail wird bereits für ein anderes Konto verwendet. Wählen Sie eine andere E-Mail aus!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else if(!this.matchPassword()) {
-      alert('Passwörter stimmen nicht überein');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Passwörter stimmen nicht überein!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
     else {
       this.branchPassword = this.formGroup.get('branchPasswordCtrl').value;

@@ -286,7 +286,12 @@ export class AdminuiPage implements OnInit {
     else if(action===2) {
       // If selected UUID is the UUID of own device, don't block it. Otherwise, you lock yourself out!
       if(uuid === this.uuid) {
-        alert('Eigenes Gerät kann nicht blockiert werden!');
+        const alertInfo: AlertInfo = {
+          header: 'Achtung',
+          subHeader: '',
+          message: 'Eigenes Gerät kann nicht blockiert werden!'
+        };
+        this.globalFunctions.createInfoAlert(alertInfo, () => {});
       } else {
         let blockedDevices = this.dataConfig.blockedDevices;
         const res = this.globalFunctions.checkForAvailableDevicesInString(blockedDevices, uuid);

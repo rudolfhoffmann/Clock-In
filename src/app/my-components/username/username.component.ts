@@ -2,7 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 
 import { PopoverController } from '@ionic/angular';
 import { Validators, FormBuilder, FormGroup } from '@angular/forms';
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
 @Component({
   selector: 'app-username',
@@ -61,7 +61,12 @@ export class UsernameComponent implements OnInit {
     };
 
     if(this.username===undefined || this.username==='') {
-      alert('Keine Bezeichnung angegeben.');
+      const alertInfo: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: 'Keine Bezeichnung angegeben!',
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, () => {});
     } else {
       await this.popoverCtrl.dismiss(data);
     }
