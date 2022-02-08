@@ -139,13 +139,14 @@ export class InAppPurchasesService {
       this.subChosen.next(true);
       // Set product-id.
       this.subId.next(product.id);
-
+      alert(product.id);
     }).cancelled(() => {
       this.subCancelled.next(true);
     }).error(productError => {
       alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
     });
 
+    this.restore();
   }
 
 }

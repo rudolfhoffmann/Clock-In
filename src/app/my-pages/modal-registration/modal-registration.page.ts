@@ -81,7 +81,6 @@ export class ModalRegistrationPage implements OnInit {
     this.plt.ready().then(() => {
       this.iapService.registerProducts();
       this.iapService.setupListeners();
-      this.iapService.restore();
     });
   }
 
@@ -216,11 +215,11 @@ export class ModalRegistrationPage implements OnInit {
         supervisorPassword: this.adminPassword,
         customerBranch: this.customerBranch,
       };
+      alert('total price: ' + this.subscriptionTotalPrice);
 
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
-        alert('order: ' + this.subId);
         this.iapService.order(this.subId);
         alert(this.subId + ' ordered');
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
