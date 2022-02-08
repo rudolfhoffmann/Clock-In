@@ -220,7 +220,9 @@ export class ModalRegistrationPage implements OnInit {
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
+        alert('order: ' + this.subId);
         this.iapService.order(this.subId);
+        alert(this.subId + ' ordered');
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
         /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {
@@ -250,9 +252,11 @@ export class ModalRegistrationPage implements OnInit {
       }
       // If no purchase made, just leave registration page.
       else {
-        this.updateAccount(updateCustomerConfigBranch, updateAccountEmail);
-        this.closeModal(data);
+        //this.updateAccount(updateCustomerConfigBranch, updateAccountEmail);
+        //this.closeModal(data);
       }
+      this.updateAccount(updateCustomerConfigBranch, updateAccountEmail);
+      this.closeModal(data);
     }
   }
 
