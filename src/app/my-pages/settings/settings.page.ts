@@ -8,6 +8,7 @@ import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import { AdminPasswordComponent } from 'src/app/my-components/admin-password/admin-password.component';
 import { UsernameComponent } from 'src/app/my-components/username/username.component';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { environment } from 'src/environments/environment';
 import { ModalBlockedDevicesPage } from '../modal-blocked-devices/modal-blocked-devices.page';
@@ -58,6 +59,7 @@ export class SettingsPage implements OnInit {
     private globalFunctions: GlobalFunctionsService,
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
+    private iapService: InAppPurchasesService,
   ) {
   }
 
@@ -134,7 +136,7 @@ export class SettingsPage implements OnInit {
     }
     // Create popover to show current subscription and enable up/downgrade.
     else if(action === this.ACTION_ID.SUBSCRIPTION) {
-
+      this.iapService.manageSubs();
     }
     // Create modal to administrate blocked devices.
     else if(action === this.ACTION_ID.BLOCKED_DEV) {
@@ -181,7 +183,7 @@ export class SettingsPage implements OnInit {
       },
       {
         id: this.ACTION_ID.SUBSCRIPTION,
-        title: 'Abo',
+        title: 'Abo verwalten',
         value: this.subName + ' ' + this.subPeriod,  // Value
       },
     ];

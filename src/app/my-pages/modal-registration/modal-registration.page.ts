@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/dot-notation */
 import { Component, Input, OnInit } from '@angular/core';
-import { ModalController, Platform, PopoverController } from '@ionic/angular';
+import { ModalController, NavController, Platform, PopoverController } from '@ionic/angular';
 
 import { ref, getDatabase, set, get, update } from '@firebase/database';
 
@@ -54,6 +54,7 @@ export class ModalRegistrationPage implements OnInit {
     private storageService: LocalStorageService,
     private globalFunctions: GlobalFunctionsService,
     private popoverCtrl: PopoverController,
+    private navCtrl: NavController,
     private plt: Platform,
     private store: InAppPurchase2,
     private iapService: InAppPurchasesService,
@@ -93,11 +94,25 @@ export class ModalRegistrationPage implements OnInit {
       emailCtrl: this.email
     });
 
+    /*
     // If subscription already available (owned status), then only new standard account can be created.
     this.subChosenSubscription = this.iapService.getSubChosenState().subscribe(chosen => {
       this.subscriptionChosen = chosen;
       this.disableSubscriptions = chosen;
     });
+    */
+   // If subscription already available (owned status), registration not possible.
+   this.subChosenSubscription = this.iapService.getSubChosenState().subscribe(chosen => {
+    const alertInfo: AlertInfo = {
+      header: 'Konto vorhanden',
+      subHeader: '',
+      message: 'Sie haben bereits ein kostenpflichtiges Konto erstellt. Eine Registrierung ist somit nicht möglich.',
+    };
+    const arrowFunction = () => {
+      this.navCtrl.navigateRoot('/home');
+    };
+    this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+  });
   }
 
 

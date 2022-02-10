@@ -127,6 +127,11 @@ export class InAppPurchasesService {
   }
 
 
+  manageSubs() {
+    this.store.manageSubscriptions();
+  }
+
+
   setupListeners() {
     // Listen to all subscription. Set state for first time of subscription.
     this.store.when('subscription').approved(product => {
@@ -139,6 +144,7 @@ export class InAppPurchasesService {
       this.subChosen.next(true);
       // Set product-id.
       this.subId.next(product.id);
+      product.cancel();
       alert(product.id);
     }).cancelled(() => {
       this.subCancelled.next(true);
