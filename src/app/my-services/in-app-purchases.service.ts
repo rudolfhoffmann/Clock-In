@@ -151,14 +151,11 @@ export class InAppPurchasesService {
     }).verified(product => {
       product.finish();
     }).owned(product => {
-      //alert(product.id);
       // Set next value of subChosen to "true" to notify observer about state.
       this.subChosen.next(true);
       // Set product-id.
-      alert(product.id);
       this.subId.next(product.id);
       product.cancel();
-      alert(product.id);
     }).cancelled(() => {
       this.subCancelled.next(true);
     }).error(productError => {

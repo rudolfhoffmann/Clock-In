@@ -122,6 +122,7 @@ export class AdminuiPage implements OnInit {
     this.iapService.setupListeners();
 
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
+      alert(subId + '\nUpdate');
       // If cancelled, update config parameters to Business Standard.
       const updateConfigBranch = {};
       if(subId === '') {
