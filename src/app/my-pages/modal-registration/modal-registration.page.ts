@@ -103,15 +103,18 @@ export class ModalRegistrationPage implements OnInit {
     */
    // If subscription already available (owned status), registration not possible.
    this.subChosenSubscription = this.iapService.getSubChosenState().subscribe(chosen => {
-    const alertInfo: AlertInfo = {
-      header: 'Konto vorhanden',
-      subHeader: '',
-      message: 'Sie haben bereits ein kostenpflichtiges Konto erstellt. Eine Registrierung ist somit nicht möglich.',
-    };
-    const arrowFunction = () => {
-      this.navCtrl.navigateRoot('/home');
-    };
-    this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+     if(chosen) {
+      const alertInfo: AlertInfo = {
+        header: 'Konto vorhanden',
+        subHeader: '',
+        message: 'Sie haben bereits ein kostenpflichtiges Konto erstellt. Eine Registrierung ist somit nicht möglich.',
+      };
+      const arrowFunction = () => {
+        this.navCtrl.navigateRoot('/home');
+        this.modalCtrl.dismiss();
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+     }
   });
   }
 
@@ -234,13 +237,11 @@ export class ModalRegistrationPage implements OnInit {
         supervisorPassword: this.adminPassword,
         customerBranch: this.customerBranch,
       };
-      alert('total price: ' + this.subscriptionTotalPrice);
 
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
         this.iapService.order(this.subId);
-        alert(this.subId + ' ordered');
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
         /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {

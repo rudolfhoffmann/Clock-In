@@ -6,6 +6,7 @@ import { Platform } from '@ionic/angular';
 import { getDatabase, ref, update } from 'firebase/database';
 import { BehaviorSubject } from 'rxjs';
 import { environment } from 'src/environments/environment';
+import { AlertInfo, GlobalFunctionsService } from './global-functions.service';
 import { LocalStorageService } from './local-storage.service';
 
 @Injectable({
@@ -70,6 +71,7 @@ export class InAppPurchasesService {
   constructor(
     private store: InAppPurchase2,
     private storageService: LocalStorageService,
+    private globalFunctions: GlobalFunctionsService,
   ) {}
 
 
@@ -85,8 +87,16 @@ export class InAppPurchasesService {
 
 
   order(id) {
+    const arrowFunction = () => {};  // Do nothing.
     this.store.order(id).then(product => {
       // Purchase in progress.
+    }).error(error => {
+      const alertInfo: AlertInfo = {
+        header: 'Fehler beim Abschließen des Abos',
+        subHeader: '',
+        message: `Es gab einen Fehler beim Abschließen des Abos\n\nFehlermeldung: ${error}`,
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
     });
   }
 
@@ -143,6 +153,7 @@ export class InAppPurchasesService {
       // Set next value of subChosen to "true" to notify observer about state.
       this.subChosen.next(true);
       // Set product-id.
+      alert(product.id);
       this.subId.next(product.id);
       product.cancel();
       alert(product.id);
