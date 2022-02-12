@@ -49,7 +49,7 @@ export class SettingsPage implements OnInit {
   dbRefConfig: any;
 
   subId = '';
-  subName = 'BUSINESS STANDARD';
+  subName = '';
   subPeriod = '';
 
   constructor(
@@ -101,7 +101,7 @@ export class SettingsPage implements OnInit {
     this.subId = this.config.subscription;
 
     const subIdSplit = this.subId.split('.');
-    //this.subName = (`${subIdSplit[1]} ${subIdSplit[2]}`).toUpperCase();
+    this.subName = (`${subIdSplit[1]} ${subIdSplit[2]}`).toUpperCase();
     if(subIdSplit.length === 4) {
       if(subIdSplit[3] === 'month') {
         this.subPeriod = '(Monatlich Abrechnung)';

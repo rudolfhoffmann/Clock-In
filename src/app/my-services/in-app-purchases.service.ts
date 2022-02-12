@@ -94,7 +94,8 @@ export class InAppPurchasesService {
       const alertInfo: AlertInfo = {
         header: 'Fehler beim Abschließen des Abos',
         subHeader: '',
-        message: `Es gab einen Fehler beim Abschließen des Abos\n\nFehlermeldung: ${error}`,
+        message: `Es gab einen Fehler beim Abschließen des Abos! Sie können die Abos in den Einstellungen verwalten \
+                  \n\nFehlermeldung: ${error}`,
       };
       this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
     });
