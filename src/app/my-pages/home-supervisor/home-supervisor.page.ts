@@ -140,13 +140,17 @@ export class HomeSupervisorPage implements OnInit {
   // Check, if userEmail already exist. If exist, enable login. Else register.
   async checkUserEmail(userEmail, loginAuto) {
     this.supervisorEmail = userEmail;
-    const accountEmail = (await get(this.refAccountEmail)).val();
-    const emails = Object.values(accountEmail);
+    const accountEmail = await get(this.refAccountEmail);
+    let accountEmailVals = {};
+    if(accountEmail.exists()) {
+      accountEmailVals = accountEmail.val();
+    }
+    const emails = Object.values(accountEmailVals);
     const emailAvail = emails.includes(this.supervisorEmail);
 
     if(emailAvail) {
       // Get the corresponding account of this email, in order to get the adminPassword to check credentialMatch.
-      this.customerBranch = this.globalFunctions.getKeyByValue(accountEmail, this.supervisorEmail);
+      this.customerBranch = this.globalFunctions.getKeyByValue(accountEmailVals, this.supervisorEmail);
       const refCustomerBranchConfig = ref(this.realtimeDB, this.customerBranch + '/' + environment.dbConfigBranch);
       const configData = (await get(refCustomerBranchConfig)).val();
       this.adminPassword = configData.adminPassword;

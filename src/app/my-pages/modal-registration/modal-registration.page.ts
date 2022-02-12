@@ -169,8 +169,12 @@ export class ModalRegistrationPage implements OnInit {
     let email: string = this.email;
     email = email.toLowerCase();
     this.refAccountEmail = ref(this.realtimeDB, environment.dbAccountEmailBranch);
-    const accountEmail = (await get(this.refAccountEmail)).val();
-    const emails = Object.values(accountEmail);
+    const accountEmail = await get(this.refAccountEmail);
+    let accountEmailVals = {};
+    if(accountEmail.exists()) {
+      accountEmailVals = accountEmail.val();
+    }
+    const emails = Object.values(accountEmailVals);
     const emailAvail = emails.includes(email);
 
     // If passwords match and customer branch not already available, complete registration. Otherwise, show alert.
