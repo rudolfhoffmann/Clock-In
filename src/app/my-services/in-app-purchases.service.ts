@@ -144,6 +144,7 @@ export class InAppPurchasesService {
 
 
   setupListeners() {
+    this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
     // Listen to all subscription. Set state for first time of subscription.
     this.store.when('subscription').approved(product => {
       product.verify();
