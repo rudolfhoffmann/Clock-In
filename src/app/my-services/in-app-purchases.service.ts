@@ -166,7 +166,9 @@ export class InAppPurchasesService {
 
       /* Notify, if subscription was updated. */
       this.store.when('subscription').updated(product => {
-        this.subId.next(product.id);
+        if(product.owned) {
+          this.subId.next(product.id);
+        }
       });
 
       this.restore();
