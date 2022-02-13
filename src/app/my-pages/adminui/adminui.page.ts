@@ -117,7 +117,7 @@ export class AdminuiPage implements OnInit {
 
 
 
-  // Check owned products (which subscription) and update parameters.
+  // Check if products updated (which subscription) and update parameters.
   checkSubscription() {
     this.iapService.setupListeners();
 
