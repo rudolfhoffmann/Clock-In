@@ -30,6 +30,10 @@ export class InAppPurchasesService {
   UNLIMITED_HISTORY = 1000000;
 
   SUB = {
+    STARTER: {
+      ID: 'clockin.business.starter',
+      PRICING_NET: 0.00,
+    },
     STANDARD_MONTH: {
       ID: 'clockin.business.standard.month',
       PRICING_NET: 5.87,
@@ -166,8 +170,16 @@ export class InAppPurchasesService {
 
       /* Notify, if subscription was updated. */
       this.store.when('subscription').updated(product => {
-        if(product.owned) {
+        const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
+        const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
+        const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
+        const p4 = this.store.get(this.SUB.PLUS_ANNUAL.ID);
+        const p5 = this.store.get(this.SUB.ENTERPRISE_MONTH.ID);
+        const p6 = this.store.get(this.SUB.ENTERPRISE_ANNUAL.ID);
+        if(p1.owned || p2.owned || p3.owned || p4.owned || p5.owned || p6.owned) {
           this.subId.next(product.id);
+        } else {
+          this.subId.next(this.SUB.STARTER.ID);
         }
       });
 

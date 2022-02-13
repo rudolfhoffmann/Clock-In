@@ -125,7 +125,7 @@ export class AdminuiPage implements OnInit {
       alert(subId + '\nUpdate');
       // If cancelled, update config parameters to Business Standard.
       const updateConfigBranch = {};
-      if(subId === '') {
+      if(subId === this.iapService.SUB.STARTER.ID) {
         updateConfigBranch['numberUser'] = 1;
         updateConfigBranch['dataHistory'] = 42;
         updateConfigBranch['subscription'] = 'clockin.business.starter';
