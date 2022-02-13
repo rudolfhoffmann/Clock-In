@@ -105,7 +105,7 @@ export class HomeSupervisorPage implements OnInit {
   appleAuth() {
     this.signInWithApple.signin({
       requestedScopes: [
-        ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
+        //ASAuthorizationAppleIDRequest.ASAuthorizationScopeFullName,
         ASAuthorizationAppleIDRequest.ASAuthorizationScopeEmail
       ]
     }).then((appleUser: AppleSignInResponse) => {
