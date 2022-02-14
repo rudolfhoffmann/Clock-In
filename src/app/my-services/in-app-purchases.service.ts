@@ -67,6 +67,8 @@ export class InAppPurchasesService {
     TIME_CONTROL: 'Zeitüberwachung',
   };
 
+  ownedHandler;
+
 
   private subChosen: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private subCancelled: BehaviorSubject<boolean> = new BehaviorSubject(false);
@@ -147,6 +149,11 @@ export class InAppPurchasesService {
   }
 
 
+  turnOff() {
+    this.store.off(this.ownedHandler);
+  }
+
+
   setupListeners() {
     this.store.ready(() => {
       // eslint-disable-next-line max-len
@@ -168,8 +175,8 @@ export class InAppPurchasesService {
         alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
       });
 
-      /* Notify, if subscription was updated. */
-      this.store.when('subscription').updated(product => {
+      /* Check, if subscription was updated. */
+      /*this.store.once('subscription').updated(product => {
         const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
         const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
         const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
@@ -181,9 +188,10 @@ export class InAppPurchasesService {
         } else {
           this.subId.next(this.SUB.STARTER.ID);
         }
+      });*/
+      this.ownedHandler = this.store.when('subscription').owned(product => {
+        this.subId.next(product.id);
       });
-
-      this.restore();
     });
 
   }

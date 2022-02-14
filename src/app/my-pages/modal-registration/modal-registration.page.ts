@@ -122,6 +122,8 @@ export class ModalRegistrationPage implements OnInit {
   ionViewDidLeave() {
     // Unsubscribe subscribted/observed BehaviourSubjects, in order to avoid multiple subscriptions.
     this.subChosenSubscription.unsubscribe();
+
+    this.iapService.turnOff();
   }
 
 

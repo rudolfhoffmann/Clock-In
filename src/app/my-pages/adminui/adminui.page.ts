@@ -113,12 +113,15 @@ export class AdminuiPage implements OnInit {
 
   ionViewDidLeave() {
     this.subIdSubscription.unsubscribe();
+
+    this.iapService.turnOff();
   }
 
 
 
   // Check if products updated (which subscription) and update parameters.
   checkSubscription() {
+    this.iapService.registerProducts();
     this.iapService.setupListeners();
 
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
