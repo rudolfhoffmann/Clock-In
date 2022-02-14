@@ -113,32 +113,34 @@ export class InAppPurchasesService {
 
 
   registerProducts() {
-    this.store.register({
-      id: this.SUB.STANDARD_MONTH.ID,
-      type: this.store.PAID_SUBSCRIPTION,
-    });
-    this.store.register({
-      id: this.SUB.STANDARD_ANNUAL.ID,
-      type: this.store.PAID_SUBSCRIPTION
-    });
-    this.store.register({
-      id: this.SUB.PLUS_MONTH.ID,
-      type: this.store.PAID_SUBSCRIPTION,
-    });
-    this.store.register({
-      id: this.SUB.PLUS_ANNUAL.ID,
-      type: this.store.PAID_SUBSCRIPTION
-    });
-    this.store.register({
-      id: this.SUB.ENTERPRISE_MONTH.ID,
-      type: this.store.PAID_SUBSCRIPTION,
-    });
-    this.store.register({
-      id: this.SUB.ENTERPRISE_ANNUAL.ID,
-      type: this.store.PAID_SUBSCRIPTION
-    });
+    this.store.ready(() => {
+      this.store.register({
+        id: this.SUB.STANDARD_MONTH.ID,
+        type: this.store.PAID_SUBSCRIPTION,
+      });
+      this.store.register({
+        id: this.SUB.STANDARD_ANNUAL.ID,
+        type: this.store.PAID_SUBSCRIPTION
+      });
+      this.store.register({
+        id: this.SUB.PLUS_MONTH.ID,
+        type: this.store.PAID_SUBSCRIPTION,
+      });
+      this.store.register({
+        id: this.SUB.PLUS_ANNUAL.ID,
+        type: this.store.PAID_SUBSCRIPTION
+      });
+      this.store.register({
+        id: this.SUB.ENTERPRISE_MONTH.ID,
+        type: this.store.PAID_SUBSCRIPTION,
+      });
+      this.store.register({
+        id: this.SUB.ENTERPRISE_ANNUAL.ID,
+        type: this.store.PAID_SUBSCRIPTION
+      });
 
-    this.restore();
+      this.restore();
+    });
   }
 
 
@@ -169,7 +171,7 @@ export class InAppPurchasesService {
       });
 
       /* Notify, if subscription was updated. */
-      this.store.when('subscription').updated(product => {
+      /*this.store.when('subscription').updated(product => {
         const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
         const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
         const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
@@ -181,6 +183,16 @@ export class InAppPurchasesService {
         } else {
           this.subId.next(this.SUB.STARTER.ID);
         }
+      });*/
+
+      /* Listen only once. */
+      this.store.once('subscription').owned(product => {
+        alert(product.id + ' owned');
+        this.subId.next(product.id);
+      });
+      this.store.once('subscription').updated(product => {
+        alert(product.id + ' updated');
+        //this.subId.next(product.id);
       });
 
       this.restore();
