@@ -237,8 +237,16 @@ export class HomeSupervisorPage implements OnInit {
 
 
   login2Supervisor() {
-    this.supervisorEmail = this.formGroup.get('supervisorEmailCtrl').value;
     this.supervisorPassword = this.formGroup.get('supervisorPasswordCtrl').value;
+    // If password for store test account, then use credentials for store test account..
+    if(this.supervisorPassword === this.globalFunctions.STORE_TEST_ACCOUNT.SUP_PW) {
+      this.supervisorEmail = this.globalFunctions.STORE_TEST_ACCOUNT.EMAIL;
+      this.customerBranch = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH;
+      this.branchPassword = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH_PW;
+    } else {
+      this.supervisorEmail = this.formGroup.get('supervisorEmailCtrl').value;
+    }
+
 
     this.checkCredentialMatch();
   }

@@ -109,7 +109,7 @@ export class AdminuiPage implements OnInit {
 
 
     // If StoreTestAccount, don't set any subscriptions. Contingent is set in firebase.
-    if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT) {
+    if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH) {
       // Set contingent in firebase!
     } else {
       this.checkSubscription();
