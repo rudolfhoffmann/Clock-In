@@ -136,13 +136,13 @@ export class AdminuiPage implements OnInit {
       // If subscription ID changed, update config branch.
       if(this.ownedSubId !== subId && subId !== '') {
         this.ownedSubId = subId;
+        const arrowFunction = () => {};
         const alertInfo: AlertInfo = {
           header: 'Abo abgeschlossen',
           subHeader: '',
           message: `Sie haben ein neues Abo abgeschlossen: ${this.ownedSubId} \
                     \n\nIm Menü unter Info > Über diese App sehen Sie Ihr neues Kontingent!`,
         };
-        const arrowFunction = () => {};
         this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
         alert('Neues Abo: ' + this.ownedSubId);
 
