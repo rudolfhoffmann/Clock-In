@@ -243,7 +243,7 @@ export class ModalRegistrationPage implements OnInit {
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
-        this.iapService.order(this.subId);
+        await this.iapService.order(this.subId);
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
         /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {

@@ -123,6 +123,7 @@ export class AdminuiPage implements OnInit {
   checkSubscription() {
     this.iapService.registerProducts();
     this.iapService.setupListeners();
+    this.iapService.restore();
 
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
       alert(subId + '\nUpdate');
