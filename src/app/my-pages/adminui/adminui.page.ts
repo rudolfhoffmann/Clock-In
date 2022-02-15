@@ -108,7 +108,12 @@ export class AdminuiPage implements OnInit {
     });
 
 
-    this.checkSubscription();
+    // If StoreTestAccount, don't set any subscriptions. Contingent is set in firebase.
+    if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT) {
+      // Set contingent in firebase!
+    } else {
+      this.checkSubscription();
+    }
   }
 
   ionViewDidLeave() {

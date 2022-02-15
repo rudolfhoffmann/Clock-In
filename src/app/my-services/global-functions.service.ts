@@ -38,6 +38,9 @@ export class GlobalFunctionsService {
 
 
 
+  STORE_TEST_ACCOUNT_SUP_PW = 'TestAccount4Store';
+  STORE_TEST_ACCOUNT = 'StoreTestAccount';
+  STORE_TEST_ACCOUNT_PW = 'StoreTestPW';
 
   MY_SERVER_URL = 'https://inno-apps.ddns.net/ClockIn/sendmail.php';
 

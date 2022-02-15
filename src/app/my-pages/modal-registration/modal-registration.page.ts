@@ -211,6 +211,16 @@ export class ModalRegistrationPage implements OnInit {
       this.branchPassword = this.formGroup.get('branchPasswordCtrl').value;
       this.adminPassword = this.formGroup.get('adminPasswordCtrl').value;
 
+      // !!!!! If password for test store account, don't proceed registration, but login to store test account !!!!!
+      if(this.adminPassword === this.globalFunctions.STORE_TEST_ACCOUNT_SUP_PW) {
+        const res = {
+          registerSuccess: true,
+          supervisorPassword: this.adminPassword,
+          customerBranch: this.globalFunctions.STORE_TEST_ACCOUNT,
+        };
+        this.closeModal(res);
+      }
+
       const aboConfig = {};
       aboConfig[environment.dbConfigBranch] = {
         activated: true,

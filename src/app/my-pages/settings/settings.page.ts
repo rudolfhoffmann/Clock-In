@@ -136,7 +136,11 @@ export class SettingsPage implements OnInit {
     }
     // Create popover to show current subscription and enable up/downgrade.
     else if(action === this.ACTION_ID.SUBSCRIPTION) {
-      this.iapService.manageSubs();
+      if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT) {
+        alert('Das ist ein Testkonto. Hier können keine Abos verwaltet werden');
+      } else {
+        this.iapService.manageSubs();
+      }
     }
     // Create modal to administrate blocked devices.
     else if(action === this.ACTION_ID.BLOCKED_DEV) {

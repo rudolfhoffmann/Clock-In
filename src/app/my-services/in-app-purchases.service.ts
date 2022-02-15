@@ -187,19 +187,19 @@ export class InAppPurchasesService {
           if(p1.owned) {
             this.subId.next(p1.id);
           }
-          else if(p2.owned) {
+          if(p2.owned) {
             this.subId.next(p2.id);
           }
-          else if(p3.owned) {
+          if(p3.owned) {
             this.subId.next(p3.id);
           }
-          else if(p4.owned) {
+          if(p4.owned) {
             this.subId.next(p4.id);
           }
-          else if(p5.owned) {
+          if(p5.owned) {
             this.subId.next(p5.id);
           }
-          else if(p6.owned) {
+          if(p6.owned) {
             this.subId.next(p6.id);
           }
         }
