@@ -140,11 +140,10 @@ export class AdminuiPage implements OnInit {
         const alertInfo: AlertInfo = {
           header: 'Abo abgeschlossen',
           subHeader: '',
-          message: `Sie haben ein neues Abo abgeschlossen: ${this.ownedSubId} \
+          message: `Sie haben ein neues Abo abgeschlossen: ${this.ownedSubId}
                     \n\nIm Menü unter Info > Über diese App sehen Sie Ihr neues Kontingent!`,
         };
         this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
-        alert('Neues Abo: ' + this.ownedSubId);
 
         // If cancelled, update config parameters to Business Starter.
         const updateConfigBranch = {};
