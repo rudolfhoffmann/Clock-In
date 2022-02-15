@@ -175,8 +175,8 @@ export class InAppPurchasesService {
         alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
       });
 
-      /* Check, if subscription was updated. */
-      /*this.store.once('subscription').updated(product => {
+      /* Check, if subscription was updated. Figure out, which subscription is owned now. */
+      this.ownedHandler = this.store.when('subscription').updated(product => {
         const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
         const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
         const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
@@ -184,14 +184,32 @@ export class InAppPurchasesService {
         const p5 = this.store.get(this.SUB.ENTERPRISE_MONTH.ID);
         const p6 = this.store.get(this.SUB.ENTERPRISE_ANNUAL.ID);
         if(p1.owned || p2.owned || p3.owned || p4.owned || p5.owned || p6.owned) {
-          this.subId.next(product.id);
-        } else {
+          if(p1.owned) {
+            this.subId.next(p1.id);
+          }
+          else if(p2.owned) {
+            this.subId.next(p2.id);
+          }
+          else if(p3.owned) {
+            this.subId.next(p3.id);
+          }
+          else if(p4.owned) {
+            this.subId.next(p4.id);
+          }
+          else if(p5.owned) {
+            this.subId.next(p5.id);
+          }
+          else if(p6.owned) {
+            this.subId.next(p6.id);
+          }
+        }
+        else {
           this.subId.next(this.SUB.STARTER.ID);
         }
-      });*/
-      this.ownedHandler = this.store.when('subscription').owned(product => {
-        this.subId.next(product.id);
       });
+      /*this.ownedHandler = this.store.when('subscription').owned(product => {
+        this.subId.next(product.id);
+      });*/
     });
 
   }
