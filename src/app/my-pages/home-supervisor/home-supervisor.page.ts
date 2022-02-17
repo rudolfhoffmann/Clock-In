@@ -82,6 +82,7 @@ export class HomeSupervisorPage implements OnInit {
         this.appleAuth();
       }
       else {
+        alert('Nicht Android und nicht iOS');
         this.navigate2Home();
       }
     }
@@ -97,8 +98,13 @@ export class HomeSupervisorPage implements OnInit {
       const loginAuto = false;
       this.checkUserEmail(googleUser.email, loginAuto);
     }).catch( error => {
-      // Logout?
-      this.navigate2Home();
+      const alertInfo2: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: JSON.stringify(error),
+      };
+      const arrowFct = () => { this.navigate2Home(); };
+      this.globalFunctions.createInfoAlert(alertInfo2, arrowFct);
     });
   }
 
@@ -130,9 +136,13 @@ export class HomeSupervisorPage implements OnInit {
         this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       }
     }).catch((error: AppleSignInErrorResponse) => {
-      //alert(error.code + ' ' + error.localizedDescription);
-      // Logout?
-      this.navigate2Home();
+      const alertInfo2: AlertInfo = {
+        header: 'Fehler',
+        subHeader: '',
+        message: error.code + ' ' + error.localizedDescription,
+      };
+      const arrowFct = () => { this.navigate2Home(); };
+      this.globalFunctions.createInfoAlert(alertInfo2, arrowFct);
     });
   }
 
