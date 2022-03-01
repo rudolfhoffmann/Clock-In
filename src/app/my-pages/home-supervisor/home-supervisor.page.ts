@@ -40,6 +40,8 @@ export class HomeSupervisorPage implements OnInit {
 
   loading = false;
 
+  valError: any;
+
 
   constructor(
     private signInWithApple: SignInWithApple,
@@ -50,10 +52,12 @@ export class HomeSupervisorPage implements OnInit {
     private globalFunctions: GlobalFunctionsService,
     private storageService: LocalStorageService,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       supervisorEmailCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(30), Validators.required, Validators.email,
+        Validators.required, Validators.email,
       ])],
       supervisorPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,

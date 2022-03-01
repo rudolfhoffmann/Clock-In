@@ -26,16 +26,22 @@
       <ion-label position="floating">E-Mail</ion-label>
       <ion-input [disabled]=true formControlName="emailCtrl" type="email"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.emailCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.emailCtrl.errors?.email">{{valError.EMAIL}}</span>
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Supervisor Passwort</ion-label>
       <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
       <ion-input formControlName="adminPasswordCtrl" type="password"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.adminPasswordCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.adminPasswordCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Supervisor Passwort bestätigen</ion-label>
       <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
       <ion-input formControlName="adminPasswordConfirmCtrl" type="password" (keyup.Enter)="register()"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.adminPasswordConfirmCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.adminPasswordConfirmCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
 
     <br>
 
@@ -53,11 +59,16 @@
       <ion-label position="floating">Kontoname</ion-label>
       <ion-input formControlName="customerBranchCtrl" type="text"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.pattern">{{valError.PATTERN}}</span>
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Passwort</ion-label>
       <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
       <ion-input formControlName="branchPasswordCtrl" type="text"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.branchPasswordCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.branchPasswordCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
     <ion-text class="hints">
       Achtung! Die Kontozugangsdaten werden weiteren Benutzern weitergegeben. Verwenden Sie somit nicht ihr privates Passwort dafür!
     </ion-text>

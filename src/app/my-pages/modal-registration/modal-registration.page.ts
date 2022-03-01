@@ -47,6 +47,8 @@ export class ModalRegistrationPage implements OnInit {
   disableSubscriptions = false;
   subChosenSubscription;
 
+  valError: any;
+
 
   constructor(
     private modalCtrl: ModalController,
@@ -59,10 +61,14 @@ export class ModalRegistrationPage implements OnInit {
     private store: InAppPurchase2,
     private iapService: InAppPurchasesService,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       customerBranchCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
+        // Allow characters 0 through 9, a through z, A through Z and space 1 or multiple times (see +).
+        Validators.pattern('^[0-9 A-Za-z]+$'),
       ])],
       branchPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
@@ -74,7 +80,7 @@ export class ModalRegistrationPage implements OnInit {
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
       ])],
       emailCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(30), Validators.required, Validators.email,
+        Validators.required, Validators.email,
       ])],
     });
 

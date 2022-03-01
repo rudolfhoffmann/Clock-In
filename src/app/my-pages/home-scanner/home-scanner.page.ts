@@ -32,6 +32,8 @@ export class HomeScannerPage implements OnInit {
 
   dataConfig: any;
 
+  valError: any;
+
   constructor(
     private storageService: LocalStorageService,
     private navCtrl: NavController,
@@ -39,10 +41,14 @@ export class HomeScannerPage implements OnInit {
     private formBuilder: FormBuilder,  // Object to handle form validation.
     private globalFunctions: GlobalFunctionsService,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       customerBranchCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
+        // Allow characters 0 through 9, a through z, A through Z and space 1 or multiple times (see +).
+        Validators.pattern('^[0-9 A-Za-z]+$'),
       ])],
       branchPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
@@ -87,7 +93,7 @@ export class HomeScannerPage implements OnInit {
           const alertInfo: AlertInfo = {
             header: 'Authentifizierung fehlgeschlagen',
             subHeader: '',
-            message: 'Supervisor-Email und Passwort stimmen nicht überein!',
+            message: 'Kontoname und Passwort stimmen nicht überein!',
           };
           const arrowFunction = () => {
             //this.storageService.logout('/home-scanner', undefined);
