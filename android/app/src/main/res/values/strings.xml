@@ -5,4 +5,5 @@
     <string name="package_name">io.ionic.starter</string>
     <string name="custom_url_scheme">io.ionic.starter</string>
     <string name="server_client_id">65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com</string>
+    <!--<string name="server_client_id">512161799324-tl3tkmv5ls1ls43uh2ftana4tkqbfiua.apps.googleusercontent.com</string>-->
 </resources>

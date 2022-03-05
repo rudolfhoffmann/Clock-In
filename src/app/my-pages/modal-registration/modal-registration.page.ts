@@ -73,15 +73,6 @@ export class ModalRegistrationPage implements OnInit {
       branchPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
       ])],
-      adminPasswordCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-      adminPasswordConfirmCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-      emailCtrl: ['', Validators.compose([
-        Validators.required, Validators.email,
-      ])],
     });
 
     // Subscription
@@ -95,10 +86,6 @@ export class ModalRegistrationPage implements OnInit {
     this.realtimeDB = getDatabase();
     this.refDB = ref(this.realtimeDB);
 
-    // Use patchValue() to set only some values. With setValue() all values have to be set.
-    this.formGroup.patchValue({
-      emailCtrl: this.email
-    });
 
     /*
     // If subscription already available (owned status), then only new standard account can be created.
@@ -157,18 +144,6 @@ export class ModalRegistrationPage implements OnInit {
   }
 
 
-  // Validate, that passwords match.
-  matchPassword() {
-    const apw = this.formGroup.get('adminPasswordCtrl').value;
-    const acpw = this.formGroup.get('adminPasswordConfirmCtrl').value;
-    if(apw === acpw) {
-      return true;
-    }
-
-    return false;
-  }
-
-
 
   async register() {
     // Check, if customer branch already exists.
@@ -205,27 +180,9 @@ export class ModalRegistrationPage implements OnInit {
       };
       this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
-    else if(!this.matchPassword()) {
-      const alertInfo: AlertInfo = {
-        header: 'Fehler',
-        subHeader: '',
-        message: 'Passwörter stimmen nicht überein!',
-      };
-      this.globalFunctions.createInfoAlert(alertInfo, () => {});
-    }
     else {
       this.branchPassword = this.formGroup.get('branchPasswordCtrl').value;
-      this.adminPassword = this.formGroup.get('adminPasswordCtrl').value;
-
-      // !!!!! If password for test store account, don't proceed registration, but login to store test account !!!!!
-      if(this.adminPassword === this.globalFunctions.STORE_TEST_ACCOUNT.SUP_PW) {
-        const res = {
-          registerSuccess: true,
-          supervisorPassword: this.adminPassword,
-          customerBranch: this.globalFunctions.STORE_TEST_ACCOUNT,
-        };
-        this.closeModal(res);
-      }
+      this.adminPassword = '';
 
       const aboConfig = {};
       aboConfig[environment.dbConfigBranch] = {
@@ -254,6 +211,7 @@ export class ModalRegistrationPage implements OnInit {
         registerSuccess: true,
         supervisorPassword: this.adminPassword,
         customerBranch: this.customerBranch,
+        supervisorEmail: this.email,
       };
 
       // Subscribe

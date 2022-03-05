@@ -4,12 +4,15 @@ import { NavigationExtras } from '@angular/router';
 import { NavController } from '@ionic/angular';
 import { PopoverController } from'@ionic/angular';
 
+import { ref, getDatabase, get } from '@firebase/database';
+
 import { LocalStorageService } from '../../my-services/local-storage.service';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 
 import { IntroSliderComponent } from 'src/app/my-components/intro-slider/intro-slider.component';
 
 import { Device } from '@capacitor/device';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-home',
@@ -20,6 +23,10 @@ export class HomePage implements OnInit {
   // ----- Member Variables -----
   uuid: string;
 
+  realtimeDB;
+  refStoreTestConfig: any;  // Reference to StoreTestAccount.
+  storeAccountBranchName: string;
+  storeAccountBranchPW: string;
 
   constructor(
     private storageService: LocalStorageService,
@@ -28,14 +35,20 @@ export class HomePage implements OnInit {
     private globalFunctions: GlobalFunctionsService,
   ) {}
 
-  ngOnInit() {
+  async ngOnInit() {
+    this.storeAccountBranchName = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH;
+
+    this.realtimeDB = getDatabase();
+    this.refStoreTestConfig = ref(this.realtimeDB, this.storeAccountBranchName + '/' + environment.dbConfigBranch + '/');
+
+    const storeTestConfig = await get(this.refStoreTestConfig);
+    this.storeAccountBranchPW = storeTestConfig[environment.dbBranchPassword];
   }
 
 
   async ionViewDidEnter() {
     this.uuid = (await Device.getId()).uuid;
   }
-
 
 
   // homepage: scanner or supervisor
@@ -59,6 +72,18 @@ export class HomePage implements OnInit {
     await popover.onWillDismiss().then(res => {
 
     });
+  }
+
+
+  auth4TestAccount() {
+    // Pass data to another page.
+    const navigationExtra: NavigationExtras = {
+      queryParams: {
+        testAccount: true,
+      }
+    };
+
+    this.navCtrl.navigateForward('/home-scanner', navigationExtra);
   }
 
 

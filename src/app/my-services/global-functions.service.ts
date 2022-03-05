@@ -50,7 +50,8 @@ export class GlobalFunctionsService {
 
   STORE_TEST_ACCOUNT = {
     EMAIL: 'test@inno-apps.de',
-    SUP_PW: 'TestAccount4Store',
+    //SUP_PW: 'TestAccount4Store',
+    SUP_PW: '',
     BRANCH: 'StoreTestAccount',
     BRANCH_PW: 'StoreTestPW',
   };

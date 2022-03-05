@@ -8,17 +8,12 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:65083167549:android:b46e2eea98d4dadfdaeb54",
+        "mobilesdk_app_id": "1:65083167549:android:dae53d9562848d1cdaeb54",
         "android_client_info": {
           "package_name": "de.innoapps.clockin"
         }
       },
-      "oauth_client": [
-        {
-          "client_id": "65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
+      "oauth_client": [],
       "api_key": [
         {
           "current_key": "AIzaSyBOjXiYx883ricqQhAacJmMghB-JsHKpEA"

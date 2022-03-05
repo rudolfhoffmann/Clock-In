@@ -1,4 +1,6 @@
-// Google Sign In: https://devdactic.com/capacitor-google-sign-in/
+// Google Sign In:
+// https://devdactic.com/capacitor-google-sign-in/
+// https://enappd.com/blog/implement-google-login-in-ionic-apps-using-firebase/147/
 
 // Apple Sign In using @ionic-native/sign-in-with-apple.
 // Important!!! Go to: App --> Target --> Signing & Capabilities --> Add new capability --> Sign in with Apple

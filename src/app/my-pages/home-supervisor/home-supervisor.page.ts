@@ -32,7 +32,6 @@ export class HomeSupervisorPage implements OnInit {
   supervisorEmail = '';
   supervisorPassword = '';
   isAuth = false;
-  loginAuto = false;
 
   customerBranch = '';
   branchPassword = '';
@@ -53,16 +52,6 @@ export class HomeSupervisorPage implements OnInit {
     private storageService: LocalStorageService,
   ) {
     this.valError = this.globalFunctions.VAL_ERROR;
-
-    this.formGroup = this.formBuilder.group({
-      // Define validations.
-      supervisorEmailCtrl: ['', Validators.compose([
-        Validators.required, Validators.email,
-      ])],
-      supervisorPasswordCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-    });
   }
 
   ngOnInit() {
@@ -74,7 +63,7 @@ export class HomeSupervisorPage implements OnInit {
   async ionViewDidEnter() {
     this.supervisorEmail = await this.storageService.get('supervisorEmail');
     this.isAuth = await this.storageService.get('isAuth');
-    this.loginAuto = await this.storageService.get('loginAuto');
+
 
     // If isAuth not stored in local storage, authentication process is necessary.
     if(this.isAuth === false || this.isAuth === null || this.isAuth === undefined) {
@@ -92,15 +81,14 @@ export class HomeSupervisorPage implements OnInit {
     }
     // If supervisorEmail stored in local storage, don't authenticate and fetch corresponding password to automatically log in.
     else {
-      this.checkUserEmail(this.supervisorEmail, this.loginAuto);
+      this.checkUserEmail(this.supervisorEmail);
     }
   }
 
 
   googleAuth() {
     GoogleAuth.signIn().then(googleUser => {
-      const loginAuto = false;
-      this.checkUserEmail(googleUser.email, loginAuto);
+      this.checkUserEmail(googleUser.email);
     }).catch( error => {
       const alertInfo2: AlertInfo = {
         header: 'Fehler',
@@ -120,9 +108,9 @@ export class HomeSupervisorPage implements OnInit {
       ]
     }).then((appleUser: AppleSignInResponse) => {
       // https://developer.apple.com/documentation/signinwithapplerestapi/verifying_a_user
-      const loginAuto = false;
+
       if(appleUser.email !== '') {
-        this.checkUserEmail(appleUser.email, loginAuto);
+        this.checkUserEmail(appleUser.email);
       }
       // If app already used Apple Sign In, then the email is empty.
       // Workaround: Go to Settings --> Your Profile --> Password & Security --> Apps using Apple-ID --> Clock In --> Remove it
@@ -152,7 +140,7 @@ export class HomeSupervisorPage implements OnInit {
 
 
   // Check, if userEmail already exist. If exist, enable login. Else register.
-  async checkUserEmail(userEmail, loginAuto) {
+  async checkUserEmail(userEmail) {
     this.supervisorEmail = userEmail;
     const accountEmail = await get(this.refAccountEmail);
     let accountEmailVals = {};
@@ -170,17 +158,11 @@ export class HomeSupervisorPage implements OnInit {
       this.adminPassword = configData.adminPassword;
       this.branchPassword = configData.branchPassword;
 
-      if(loginAuto) {
-        // Fetch adminPassword from DB and log in.
-        this.supervisorPassword = this.adminPassword;
-        this.checkCredentialMatch();  // Login.
-      }
-      // Set supervisorEmail to input field.
-      else {
-        this.formGroup.patchValue({
-          supervisorEmailCtrl: this.supervisorEmail,
-        });
-      }
+      alert(this.adminPassword + this.branchPassword);
+
+      // Fetch adminPassword from DB and log in.
+      this.supervisorPassword = this.adminPassword;
+      this.checkCredentialMatch();  // Login.
 
     }
     else {
@@ -206,12 +188,8 @@ export class HomeSupervisorPage implements OnInit {
         // If successfully registered, get account credentials for supervisor and login with them.
         this.supervisorPassword = res.data.supervisorPassword;
         this.adminPassword = this.supervisorPassword;
+        this.supervisorEmail = res.data.supervisorEmail;
         this.customerBranch = res.data.customerBranch;
-
-        this.formGroup.setValue({
-          supervisorEmailCtrl: this.supervisorEmail,
-          supervisorPasswordCtrl: this.supervisorPassword,
-        });
 
         this.login2Supervisor();
       }
@@ -230,7 +208,6 @@ export class HomeSupervisorPage implements OnInit {
       await this.storageService.set('branchPassword', this.branchPassword);
       await this.storageService.set('supervisorEmail', this.supervisorEmail);
       await this.storageService.set('isAuth', true);
-      await this.storageService.set('loginAuto', true);
 
       // Redirect to admin UI.
       this.navigate2Adminui();
@@ -251,14 +228,12 @@ export class HomeSupervisorPage implements OnInit {
 
 
   login2Supervisor() {
-    this.supervisorPassword = this.formGroup.get('supervisorPasswordCtrl').value;
     // If password for store test account, then use credentials for store test account..
-    if(this.supervisorPassword === this.globalFunctions.STORE_TEST_ACCOUNT.SUP_PW) {
+    if(this.branchPassword === this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH_PW) {
       this.supervisorEmail = this.globalFunctions.STORE_TEST_ACCOUNT.EMAIL;
       this.customerBranch = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH;
       this.branchPassword = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH_PW;
-    } else {
-      this.supervisorEmail = this.formGroup.get('supervisorEmailCtrl').value;
+      this.supervisorPassword = this.globalFunctions.STORE_TEST_ACCOUNT.SUP_PW;
     }
 
 
@@ -271,54 +246,6 @@ export class HomeSupervisorPage implements OnInit {
   }
   navigate2Adminui() {
     this.navCtrl.navigateRoot('/adminui');
-  }
-
-
-  passwordForgotten() {
-    if(this.customerBranch === '') {
-      const alertInfo: AlertInfo = {
-        header: 'Konto nicht vorhanden',
-        subHeader: '',
-        message: 'Es ist kein Konto mit der angegeben E-Mail vorhanden!',
-      };
-      const arrowFunction = () => {};
-      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
-    }
-    else {
-      const postData = {
-        token: environment.clockinHttp,  // Token to verify, that php file was called from this app and not by someone else.
-
-        to: this.supervisorEmail,
-        subject: `Ihr Passwort für das ClockIn-Konto "${this.customerBranch}"`,
-        message: `<p>Ihre ClockIn-Zugangsdaten lauten:</p> \
-                  <p>Kontoname: <strong>${this.customerBranch}</strong><br>Konto Passwort: <strong>${this.branchPassword}</strong></p>\
-                  <p>Loggen Sie sich mit diesen Zugangsdaten ein. Unter Einstellungen können Sie Ihr Passwort ändern. \
-                  Um Änderungen vorzunehmen, müssen Sie sich mit dem Administrator Passwort authentifizieren:</p>\
-                  <p>Administrator Passwort: <strong>${this.adminPassword}</strong></p>`,
-      };
-
-      this.loading = true;
-
-      const options = {
-        url: this.globalFunctions.MY_SERVER_URL,
-        headers: {},
-        data: {test: 'test'},
-      };
-
-      Http.post(options).then(res => {
-        this.loading = false;
-        const alertInfo: AlertInfo = {
-          header: 'Zugangsdaten gesendet',
-          subHeader: '',
-          message: 'Ihre Zugangsdaten wurden an Ihre E-Mail gesendet!',
-        };
-        this.globalFunctions.createInfoAlert(alertInfo, () => {});
-        alert(JSON.stringify(res));
-      }).catch(e => {
-        this.loading = false;
-        alert(JSON.stringify(e));
-      });
-    }
   }
 
 }

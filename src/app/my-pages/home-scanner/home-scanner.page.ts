@@ -13,6 +13,7 @@ import { UsernameComponent } from 'src/app/my-components/username/username.compo
 import { environment } from 'src/environments/environment';
 
 import { Device } from '@capacitor/device';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home-scanner',
@@ -32,6 +33,9 @@ export class HomeScannerPage implements OnInit {
 
   dataConfig: any;
 
+  heading = 'Clock-In Scanner';
+  auth4testAccount = false;
+
   valError: any;
 
   constructor(
@@ -40,6 +44,7 @@ export class HomeScannerPage implements OnInit {
     private popoverCtrl: PopoverController,
     private formBuilder: FormBuilder,  // Object to handle form validation.
     private globalFunctions: GlobalFunctionsService,
+    private actRoute: ActivatedRoute,
   ) {
     this.valError = this.globalFunctions.VAL_ERROR;
 
@@ -64,11 +69,22 @@ export class HomeScannerPage implements OnInit {
   async ionViewDidEnter() {
     this.uuid = (await Device.getId()).uuid;
     this.realtimeDB = getDatabase();
+
     // Read account credentials from local storage.
     await this.getAccountCredentials();
 
-    // Check, if local password and password from DB match.
-    this.checkCredentialMatch();
+    this.actRoute.queryParams.subscribe(params => {
+      this.auth4testAccount = params.testAccount;
+
+      if(this.auth4testAccount) {
+        this.heading = 'Testkonto';
+      }
+      // Try to login with previous stored credentials.
+      else {
+        // Check, if local password and password from DB match.
+        this.checkCredentialMatch();
+      }
+    });
   }
 
 
@@ -133,7 +149,11 @@ export class HomeScannerPage implements OnInit {
 
 
   openClockInUI() {
-    this.navCtrl.navigateRoot('/clockinui');
+    if(this.auth4testAccount) {
+      this.navCtrl.navigateRoot('/adminui');
+    } else {
+      this.navCtrl.navigateRoot('/clockinui');
+    }
   }
 
 
