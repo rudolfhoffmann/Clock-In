@@ -178,7 +178,7 @@ export class InAppPurchasesService {
       });
 
 
-      this.restore();
+      //this.restore();
 
 
 
