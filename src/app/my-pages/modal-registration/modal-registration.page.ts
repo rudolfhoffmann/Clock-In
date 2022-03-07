@@ -37,7 +37,7 @@ export class ModalRegistrationPage implements OnInit {
 
   subscriptionChosen = false;
   subId = 'clockin.business.starter';
-  subScriptionName = 'Business Starter';
+  subscriptionName = 'Business Starter';
   subscriptionPeriod: string;
   subscriptionTotalPrice = 0;
 
@@ -135,7 +135,7 @@ export class ModalRegistrationPage implements OnInit {
     await popover.onWillDismiss().then(res => {
       if(res !== undefined && res !== null) {
         this.subId = res.data.subId;
-        this.subScriptionName = res.data.subName;
+        this.subscriptionName = res.data.subName;
         this.subscriptionPeriod = res.data.subPeriod;
         this.subscriptionTotalPrice = res.data.subTotalPrice;
         this.subscriptionChosen = true;

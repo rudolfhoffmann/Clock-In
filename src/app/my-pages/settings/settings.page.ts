@@ -6,6 +6,7 @@ import { Device } from '@capacitor/device';
 import { onValue, getDatabase, get, ref, set, update } from '@firebase/database';
 import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import { AdminPasswordComponent } from 'src/app/my-components/admin-password/admin-password.component';
+import { SubscriptionComponent } from 'src/app/my-components/subscription/subscription.component';
 import { UsernameComponent } from 'src/app/my-components/username/username.component';
 import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
@@ -139,7 +140,8 @@ export class SettingsPage implements OnInit {
       if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH) {
         alert('Das ist ein Testkonto. Hier können keine Abos verwaltet werden');
       } else {
-        this.iapService.manageSubs();
+        //this.iapService.manageSubs();
+        this.createChooseSubscriptionPopover();
       }
     }
     // Create modal to administrate blocked devices.
@@ -337,6 +339,27 @@ export class SettingsPage implements OnInit {
         this.config.blockedDevices = blockedDevices;
         this.defineSettingsList();
       });
+    });
+  }
+
+
+  async createChooseSubscriptionPopover() {
+    const popover = await this.popoverCtrl.create({
+      component: SubscriptionComponent,
+      cssClass: 'introSliderCss',
+      backdropDismiss: true,
+      translucent: true,
+    });
+
+    // Show popover.
+    await popover.present();
+
+    // Use onWillDismiss instead of onDidDismiss to achieve a flowlier transition for rendering the new calculated prices!
+    await popover.onWillDismiss().then(res => {
+      if(res !== undefined && res !== null) {
+        this.subId = res.data.subId;
+        this.iapService.order(this.subId);
+      }
     });
   }
 }
