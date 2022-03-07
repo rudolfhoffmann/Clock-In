@@ -140,7 +140,7 @@ export class InAppPurchasesService {
       type: this.store.PAID_SUBSCRIPTION
     });
 
-    this.restore();
+    //this.restore();
   }
 
 
@@ -178,7 +178,7 @@ export class InAppPurchasesService {
       });
 
 
-      //this.restore();
+      this.restore();
 
 
 
