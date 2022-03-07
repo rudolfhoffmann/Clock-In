@@ -158,8 +158,6 @@ export class HomeSupervisorPage implements OnInit {
       this.adminPassword = configData.adminPassword;
       this.branchPassword = configData.branchPassword;
 
-      alert(this.adminPassword + this.branchPassword);
-
       // Fetch adminPassword from DB and log in.
       this.supervisorPassword = this.adminPassword;
       this.checkCredentialMatch();  // Login.

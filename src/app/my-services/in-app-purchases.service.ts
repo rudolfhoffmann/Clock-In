@@ -160,7 +160,7 @@ export class InAppPurchasesService {
       this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
 
       // Listen to all subscription. Set state for first time of subscription.
-      this.store.when('subscription').approved(product => {
+      this.ownedHandler = this.store.when('subscription').approved(product => {
         product.verify();
       }).verified(product => {
         product.finish();
@@ -173,10 +173,17 @@ export class InAppPurchasesService {
         this.subCancelled.next(true);
       }).error(productError => {
         alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
+      }).owned(product => {
+        this.subId.next(product.id);
       });
 
+
+      this.restore();
+
+
+
       /* Check, if subscription was updated. Figure out, which subscription is owned now. */
-      this.ownedHandler = this.store.when('subscription').updated(product => {
+      /*this.ownedHandler = this.store.when('subscription').updated(product => {
         const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
         const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
         const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
@@ -206,7 +213,7 @@ export class InAppPurchasesService {
         else {
           this.subId.next(this.SUB.STARTER.ID);
         }
-      });
+      });*/
       /*this.ownedHandler = this.store.when('subscription').owned(product => {
         this.subId.next(product.id);
       });*/
