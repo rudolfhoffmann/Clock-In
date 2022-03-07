@@ -161,11 +161,11 @@ export class SettingsPage implements OnInit {
         title: 'E-Mail (nicht änderbar)',
         value: this.config.adminEmail,
       },
-      {
+      /*{
         id: this.ACTION_ID.ADMIN,
         title: 'Supervisor Passwort ändern',
         value: '',
-      },
+      },*/
       // Changing account name not possible for this app, because renaming of keys not possible.
       // To rename account name, a new account has to be created and all data has to be passed to the new account.
       // This is very bandwidth expensive and thus, not implemented for this app.
