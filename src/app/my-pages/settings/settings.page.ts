@@ -98,6 +98,10 @@ export class SettingsPage implements OnInit {
 
   }
 
+  ionViewDidLeave() {
+    //this.iapService.turnOff();
+  }
+
   showSubscription() {
     this.subId = this.config.subscription;
 
@@ -344,6 +348,10 @@ export class SettingsPage implements OnInit {
 
 
   async createChooseSubscriptionPopover() {
+    /*this.iapService.registerProducts();
+    this.iapService.setupListeners();
+    this.iapService.restore();*/
+
     const popover = await this.popoverCtrl.create({
       component: SubscriptionComponent,
       cssClass: 'introSliderCss',
@@ -357,8 +365,19 @@ export class SettingsPage implements OnInit {
     // Use onWillDismiss instead of onDidDismiss to achieve a flowlier transition for rendering the new calculated prices!
     await popover.onWillDismiss().then(res => {
       if(res !== undefined && res !== null) {
-        this.subId = res.data.subId;
-        this.iapService.order(this.subId);
+        if(this.subId === res.data.subId) {
+          // Same subscription. Do nothing.
+        }
+        else {
+          this.subId = res.data.subId;
+          if(this.subId === this.iapService.SUB.STARTER.ID) {
+            alert('Um Business Starter zu benutzen, müssen Sie Ihr Abo im Play Store kündigen!');
+          }
+          else {
+            const changed = true;
+            this.iapService.order(this.subId, changed);
+          }
+        }
       }
     });
   }

@@ -16,6 +16,7 @@ import { File } from '@ionic-native/file/ngx';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { Device } from '@capacitor/device';
 import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 
 
 
@@ -64,6 +65,7 @@ export class AdminuiPage implements OnInit {
     private file: File,
     private storageService: LocalStorageService,
     private iapService: InAppPurchasesService,
+    private store: InAppPurchase2,
   ) { }
 
   async ngOnInit() {
@@ -115,24 +117,24 @@ export class AdminuiPage implements OnInit {
     if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH) {
       // Set contingent in firebase!
     } else {
-      // Don't check subscription for this version for test purposes
-      //this.checkSubscription();
+      /*this.iapService.registerProducts();
+      this.iapService.setupListeners();
+      this.iapService.restore();*/
+      this.checkSubscription();
     }
   }
 
   ionViewDidLeave() {
     this.subIdSubscription.unsubscribe();
 
-    this.iapService.turnOff();
+    //this.iapService.turnOff();
   }
 
 
 
   // Check if products updated (which subscription) and update parameters.
   checkSubscription() {
-    this.iapService.registerProducts();
-    this.iapService.setupListeners();
-
+    // Observe subscription ID.
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
       alert(subId);
       // If subscription ID changed, update config branch.
@@ -145,7 +147,7 @@ export class AdminuiPage implements OnInit {
           message: `Sie haben ein neues Abo abgeschlossen: ${this.ownedSubId}
                     \n\nIm Menü unter Info > Über diese App sehen Sie Ihr neues Kontingent!`,
         };
-        this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+        //this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
 
         // If cancelled, update config parameters to Business Starter.
         const updateConfigBranch = {};
@@ -173,7 +175,10 @@ export class AdminuiPage implements OnInit {
           updateConfigBranch['subscription'] = subId;
         }
 
-        update(this.dbRefConfig, updateConfigBranch);
+        update(this.dbRefConfig, updateConfigBranch).then(() => {
+          // If successfully updated, unsubscribe store listeners.
+          //this.iapService.turnOff();
+        });
       }
     });
   }

@@ -13,6 +13,7 @@ import { IntroSliderComponent } from 'src/app/my-components/intro-slider/intro-s
 
 import { Device } from '@capacitor/device';
 import { environment } from 'src/environments/environment';
+import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
 
 @Component({
   selector: 'app-home',
@@ -33,9 +34,14 @@ export class HomePage implements OnInit {
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private globalFunctions: GlobalFunctionsService,
+    private iapService: InAppPurchasesService,
   ) {}
 
   async ngOnInit() {
+    this.iapService.registerProducts();
+    this.iapService.setupListeners();
+    this.iapService.restore();
+
     this.storeAccountBranchName = this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH;
 
     this.realtimeDB = getDatabase();

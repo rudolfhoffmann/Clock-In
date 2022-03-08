@@ -67,12 +67,12 @@ export class InAppPurchasesService {
     TIME_CONTROL: 'Zeitüberwachung',
   };
 
-  ownedHandler;
+  storeHandler;
 
 
   private subChosen: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private subCancelled: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private subId: BehaviorSubject<string> = new BehaviorSubject('');
+  private subId: BehaviorSubject<string> = new BehaviorSubject(this.SUB.STARTER.ID);
 
   constructor(
     private store: InAppPurchase2,
@@ -92,10 +92,19 @@ export class InAppPurchasesService {
   }
 
 
-  order(id) {
+  order(id, changed) {
     const arrowFunction = () => {};  // Do nothing.
     this.store.order(id).then(product => {
       // Purchase in progress.
+      // If purchase was changed, notify with alert that changes are visible after restart.
+      if(changed) {
+        const alertInfo: AlertInfo = {
+          header: 'Abo erfolgreich abgeschlossen.',
+          subHeader: '',
+          message: `Sie haben das Abo erfolgreich abgeschlossen! Änderungen sind nach einem Neustart der App wirksam.`,
+        };
+        this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+      }
     }).error(error => {
       const alertInfo: AlertInfo = {
         header: 'Fehler beim Abschließen des Abos',
@@ -150,73 +159,34 @@ export class InAppPurchasesService {
 
 
   turnOff() {
-    this.store.off(this.ownedHandler);
+    // Unsubscripe listeners when leaving page. Register subscription multiple times leads to
+    // chaotical behaviour (calling owned status very often).
+    // Unsubscribing the listeners multiple times is allowed! No Crash.
+    this.store.off(this.storeHandler);
   }
 
 
   setupListeners() {
-    this.store.ready(() => {
-      // eslint-disable-next-line max-len
-      this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
+    // eslint-disable-next-line max-len
+    this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
 
-      // Listen to all subscription. Set state for first time of subscription.
-      this.ownedHandler = this.store.when('subscription').approved(product => {
-        product.verify();
-      }).verified(product => {
-        product.finish();
-      })/*.owned(product => {
-        // Set next value of subChosen to "true" to notify observer about state.
-        this.subChosen.next(true);
-        // Set product-id.
-        this.subId.next(product.id);
-      })*/.cancelled(() => {
-        this.subCancelled.next(true);
-      }).error(productError => {
-        alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
-      }).owned(product => {
-        this.subId.next(product.id);
-      });
-
-
-      this.restore();
-
-
-
-      /* Check, if subscription was updated. Figure out, which subscription is owned now. */
-      /*this.ownedHandler = this.store.when('subscription').updated(product => {
-        const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
-        const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
-        const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
-        const p4 = this.store.get(this.SUB.PLUS_ANNUAL.ID);
-        const p5 = this.store.get(this.SUB.ENTERPRISE_MONTH.ID);
-        const p6 = this.store.get(this.SUB.ENTERPRISE_ANNUAL.ID);
-        if(p1.owned || p2.owned || p3.owned || p4.owned || p5.owned || p6.owned) {
-          if(p1.owned) {
-            this.subId.next(p1.id);
-          }
-          if(p2.owned) {
-            this.subId.next(p2.id);
-          }
-          if(p3.owned) {
-            this.subId.next(p3.id);
-          }
-          if(p4.owned) {
-            this.subId.next(p4.id);
-          }
-          if(p5.owned) {
-            this.subId.next(p5.id);
-          }
-          if(p6.owned) {
-            this.subId.next(p6.id);
-          }
-        }
-        else {
-          this.subId.next(this.SUB.STARTER.ID);
-        }
-      });*/
-      /*this.ownedHandler = this.store.when('subscription').owned(product => {
-        this.subId.next(product.id);
-      });*/
+    // Listen to all subscription. Set state for first time of subscription.
+    this.storeHandler = this.store.when('subscription').approved(product => {
+      product.verify();
+    }).verified(product => {
+      product.finish();
+    })/*.owned(product => {
+      // Set next value of subChosen to "true" to notify observer about state.
+      this.subChosen.next(true);
+      // Set product-id.
+      this.subId.next(product.id);
+    })*/.cancelled(() => {
+      this.subCancelled.next(true);
+    }).error(productError => {
+      alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
+    }).owned(product => {
+      // Set observable, to observe subscription ID.
+      this.subId.next(product.id);
     });
 
   }

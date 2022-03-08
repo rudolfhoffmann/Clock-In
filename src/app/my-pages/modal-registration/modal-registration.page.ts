@@ -77,8 +77,9 @@ export class ModalRegistrationPage implements OnInit {
 
     // Subscription
     this.plt.ready().then(() => {
-      this.iapService.registerProducts();
+      /*this.iapService.registerProducts();
       this.iapService.setupListeners();
+      this.iapService.restore();*/
     });
   }
 
@@ -116,7 +117,7 @@ export class ModalRegistrationPage implements OnInit {
     // Unsubscribe subscribted/observed BehaviourSubjects, in order to avoid multiple subscriptions.
     this.subChosenSubscription.unsubscribe();
 
-    this.iapService.turnOff();
+    //this.iapService.turnOff();
   }
 
 
@@ -217,7 +218,8 @@ export class ModalRegistrationPage implements OnInit {
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
-        await this.iapService.order(this.subId);
+        const changed = false;
+        await this.iapService.order(this.subId, changed);
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
         /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {
