@@ -136,7 +136,7 @@ export class AdminuiPage implements OnInit {
   checkSubscription() {
     // Observe subscription ID.
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
-      alert(subId);
+      //alert(subId);
       // If subscription ID changed, update config branch.
       if(this.ownedSubId !== subId && subId !== '') {
         this.ownedSubId = subId;

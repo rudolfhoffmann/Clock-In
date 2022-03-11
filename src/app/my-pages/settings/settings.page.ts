@@ -381,4 +381,9 @@ export class SettingsPage implements OnInit {
       }
     });
   }
+
+
+  restorePurchase() {
+    this.iapService.restore();
+  }
 }
