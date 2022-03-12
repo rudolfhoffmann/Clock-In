@@ -130,6 +130,10 @@ export class AdminuiPage implements OnInit {
     //this.iapService.turnOff();
   }
 
+  ionViewDidEnter() {
+    this.checkSubscription();
+  }
+
 
 
   // Check if products updated (which subscription) and update parameters.

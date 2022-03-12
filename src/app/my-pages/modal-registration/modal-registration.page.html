@@ -76,7 +76,7 @@
 
     <br>
     <h5>Abo wählen</h5>
-    <ion-item line="none" class="ion-no-padding">
+    <ion-item lines="none" class="ion-no-padding">
       <ion-button class="ion-no-padding" [disabled]="disableSubscriptions" (click)="chooseSubscription()" *ngIf="!subscriptionChosen" fill="clear" expand="full">Wählen Sie ein Abo</ion-button>
       <ion-button class="ion-no-padding" [disabled]="disableSubscriptions" (click)="chooseSubscription()" *ngIf="subscriptionChosen" fill="clear" expand="full">
         {{subscriptionName}}

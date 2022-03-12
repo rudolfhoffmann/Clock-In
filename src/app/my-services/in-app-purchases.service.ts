@@ -101,7 +101,7 @@ export class InAppPurchasesService {
         const alertInfo: AlertInfo = {
           header: 'In Bearbeitung...',
           subHeader: '',
-          message: `Es kann einige Minuten dauern, bis der Vorgang abgeschlossen ist.`,
+          message: `Es kann einige Minuten dauern, bis der Kaufvorgang abgeschlossen ist.`,
         };
         this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       }
@@ -174,13 +174,6 @@ export class InAppPurchasesService {
     this.storeHandler = this.store.when('subscription').approved(product => {
       product.verify();
     }).verified(product => {
-      const arrowFunction = () => {};  // Do nothing.
-      const alertInfo: AlertInfo = {
-        header: 'Abo erfolgreich abgeschlossen.',
-        subHeader: '',
-        message: `Sie haben das Abo erfolgreich abgeschlossen! Die Änderungen sind nach einem Neustart wirksam.`,
-      };
-      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       product.finish();
     })/*.owned(product => {
       // Set next value of subChosen to "true" to notify observer about state.
