@@ -4,11 +4,12 @@ import { ActivatedRoute } from '@angular/router';
 import { Device } from '@capacitor/device';
 
 import { onValue, getDatabase, get, ref, set, update } from '@firebase/database';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 import { ModalController, Platform, PopoverController } from '@ionic/angular';
 import { AdminPasswordComponent } from 'src/app/my-components/admin-password/admin-password.component';
 import { SubscriptionComponent } from 'src/app/my-components/subscription/subscription.component';
 import { UsernameComponent } from 'src/app/my-components/username/username.component';
-import { GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
+import { AlertInfo, GlobalFunctionsService } from 'src/app/my-services/global-functions.service';
 import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { environment } from 'src/environments/environment';
@@ -49,9 +50,16 @@ export class SettingsPage implements OnInit {
   dbRefUsername: any;
   dbRefConfig: any;
 
-  subId = '';
-  subName = '';
+  isStarter = true;
+  subId = this.iapService.SUB.STARTER.ID;
+  subName = 'Business Starter';
   subPeriod = '';
+  subTotalPrice = '0 €';
+  subTrial = '';
+  subDesc = '1 Benutzer, 6 Wochen Datenspeicherung';
+
+
+  subIdSubscription;
 
   constructor(
     private plt: Platform,
@@ -61,6 +69,7 @@ export class SettingsPage implements OnInit {
     private popoverCtrl: PopoverController,
     private modalCtrl: ModalController,
     private iapService: InAppPurchasesService,
+    private store: InAppPurchase2,
   ) {
   }
 
@@ -82,7 +91,7 @@ export class SettingsPage implements OnInit {
         this.blockedDevices.push(dev);
       }
     });
-    this.showSubscription();
+    //this.showSubscription();
 
     this.uuid = (await Device.getId()).uuid;
     this.usernamePath = this.customerBranch + '/' + environment.dbDevicesBranch + '/' + this.uuid + '/' + environment.dbUsername;
@@ -96,17 +105,45 @@ export class SettingsPage implements OnInit {
       this.defineSettingsList();
     });
 
+
+    // Observe subscription ID.
+    this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
+      this.subId = subId;
+    });
+
+    // Get information of product.
+    this.getProductInfo();
+
   }
 
   ionViewDidLeave() {
     //this.iapService.turnOff();
+    this.subIdSubscription.unsubscribe();
   }
+
+
+  getProductInfo() {
+    this.store.ready(() => {
+      if(this.subId !== this.iapService.SUB.STARTER.ID) {
+        this.isStarter = false;
+      }
+      const product = this.store.get(this.subId);
+
+      if(product !== undefined || product !== null) {
+        this.subName = product.title;
+        this.subTotalPrice = product.price;
+        this.subTrial = '14 Tage kostenlose Testversion';
+        this.subDesc = product.description;
+      }
+    });
+  }
+
 
   showSubscription() {
     this.subId = this.config.subscription;
 
     const subIdSplit = this.subId.split('.');
-    this.subName = (`${subIdSplit[1]} ${subIdSplit[2]}`).toUpperCase();
+    this.subName = (`${subIdSplit[1]} ${subIdSplit[2]}`);
     if(subIdSplit.length === 4) {
       if(subIdSplit[3] === 'month') {
         this.subPeriod = '(Monatlich Abrechnung)';
@@ -191,11 +228,11 @@ export class SettingsPage implements OnInit {
         title: 'Blockierte Geräte verwalten',
         value: '',
       },
-      {
+      /*{
         id: this.ACTION_ID.SUBSCRIPTION,
         title: 'Abo verwalten',
         value: this.subName + ' ' + this.subPeriod,  // Value
-      },
+      },*/
     ];
   }
 
@@ -384,6 +421,15 @@ export class SettingsPage implements OnInit {
 
 
   restorePurchase() {
-    this.iapService.restore();
+    this.store.refresh().completed(() => {
+      this.getProductInfo();
+      const arrowFunction = () => {};  // Do nothing.
+      const alertInfo: AlertInfo = {
+        header: 'Restore abgeschlossen',
+        subHeader: '',
+        message: `Die Abos wurden aktualisiert!`,
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+    });
   }
 }

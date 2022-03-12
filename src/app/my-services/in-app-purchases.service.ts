@@ -96,12 +96,12 @@ export class InAppPurchasesService {
     const arrowFunction = () => {};  // Do nothing.
     this.store.order(id).then(product => {
       // Purchase in progress.
-      // If purchase was changed, notify with alert that changes are visible after restart.
+      // If purchase was changed, notify with alert that purchase is in progress.
       if(changed) {
         const alertInfo: AlertInfo = {
-          header: 'Abo erfolgreich abgeschlossen.',
+          header: 'In Bearbeitung...',
           subHeader: '',
-          message: `Sie haben das Abo erfolgreich abgeschlossen! Änderungen sind nach einem Neustart der App wirksam.`,
+          message: `Es kann einige Minuten dauern, bis der Vorgang abgeschlossen ist.`,
         };
         this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       }
@@ -174,6 +174,13 @@ export class InAppPurchasesService {
     this.storeHandler = this.store.when('subscription').approved(product => {
       product.verify();
     }).verified(product => {
+      const arrowFunction = () => {};  // Do nothing.
+      const alertInfo: AlertInfo = {
+        header: 'Abo erfolgreich abgeschlossen.',
+        subHeader: '',
+        message: `Sie haben das Abo erfolgreich abgeschlossen! Die Änderungen sind nach einem Neustart wirksam.`,
+      };
+      this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
       product.finish();
     })/*.owned(product => {
       // Set next value of subChosen to "true" to notify observer about state.
