@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/naming-convention */
 import { Component, OnInit } from '@angular/core';
 import { NavigationExtras } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { NavController, Platform } from '@ionic/angular';
 import { PopoverController } from'@ionic/angular';
 
 import { ref, getDatabase, get } from '@firebase/database';
@@ -24,6 +24,8 @@ export class HomePage implements OnInit {
   // ----- Member Variables -----
   uuid: string;
 
+  isIos = false;
+
   realtimeDB;
   refStoreTestConfig: any;  // Reference to StoreTestAccount.
   storeAccountBranchName: string;
@@ -35,9 +37,14 @@ export class HomePage implements OnInit {
     private popoverCtrl: PopoverController,
     private globalFunctions: GlobalFunctionsService,
     private iapService: InAppPurchasesService,
+    private plt: Platform,
   ) {}
 
   async ngOnInit() {
+    if(this.plt.is('ios')) {
+      this.isIos = true;
+    }
+
     this.iapService.registerProducts();
     this.iapService.setupListeners();
     this.iapService.restore();

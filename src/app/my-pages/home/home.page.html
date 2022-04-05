@@ -12,12 +12,24 @@
     </ion-text>
   </ion-card>
 
-  <ion-card (click)="openHome('supervisor')" class="ion-padding ion-no-margin ion-margin-vertical">
+  <ion-card *ngIf="!isIos" (click)="openHome('supervisor')" class="ion-padding ion-no-margin ion-margin-vertical">
     <h3>Clock-In Supervisor</h3>
     <ion-text>
       Generieren Sie QR-Codes und überwachen Sie die erfassten Arbeitszeiten.
     </ion-text>
   </ion-card>
+  <!-- For Sign In with Apple, the button displaying must be in his classic way. -->
+  <ion-card *ngIf="isIos" class="ion-padding ion-no-margin ion-margin-vertical">
+    <h3>Clock-In Supervisor</h3>
+    <ion-text>
+      Generieren Sie QR-Codes und überwachen Sie die erfassten Arbeitszeiten.
+    </ion-text>
+    <ion-button (click)="openHome('supervisor')" expand="block" color="secondary">
+      Sign In with Apple
+      <ion-icon name="logo-apple" slot="start"></ion-icon>
+    </ion-button>
+  </ion-card>
+
 
   <ion-button (click)="createIntroSliderPopover()" class="ion-no-padding" fill="clear">Wie funktioniert diese App?</ion-button>
 </ion-content>
