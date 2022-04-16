@@ -134,7 +134,12 @@ export class QrgeneratorPage implements OnInit {
       this.navCtrl.pop();
     };
 
-    this.globalFunctions.writeFileToDevice(subPath, fileName, fileType, blob, successFct);
+    try {
+      this.globalFunctions.writeFileToDevice(subPath, fileName, fileType, blob, successFct);
+    } catch(e) {
+      JSON.stringify(e);
+    }
+
 
   }
 
