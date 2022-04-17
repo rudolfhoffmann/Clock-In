@@ -380,6 +380,8 @@ export class GlobalFunctionsService {
         };
 
         this.createSimpleAlert(alertInfo, arrowFunction);
+      } else {
+        alert(JSON.stringify(err));
       }
     });
 

@@ -11,7 +11,7 @@ android {
         // Reason: I got already greater verionCodes (see 3036 -> Version 3.0.36)
         // Solution: Append 0 to the end of versionCode and if error occurs while uploading bundle
         // you can increment the last digit (since multiple upload of same bundle code not allowed).
-        versionCode 3200
+        versionCode 3202
         versionName "3.2.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
