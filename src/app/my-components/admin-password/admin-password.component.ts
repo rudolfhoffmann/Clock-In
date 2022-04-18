@@ -21,12 +21,16 @@ export class AdminPasswordComponent implements OnInit {
 
   realtimeDB;
 
+  valError: any;
+
   constructor(
     private popoverCtrl: PopoverController,
     private storageService: LocalStorageService,
     private formBuilder: FormBuilder,  // Object to handle form validation.
     private globalFunctions: GlobalFunctionsService,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       oldPasswordCtrl: ['', Validators.compose([

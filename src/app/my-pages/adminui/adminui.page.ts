@@ -16,6 +16,7 @@ import { File } from '@ionic-native/file/ngx';
 import { LocalStorageService } from 'src/app/my-services/local-storage.service';
 import { Device } from '@capacitor/device';
 import { InAppPurchasesService } from 'src/app/my-services/in-app-purchases.service';
+import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 
 
 
@@ -51,6 +52,9 @@ export class AdminuiPage implements OnInit {
 
   subIdSubscription;
 
+  // Listen to owned subscription and save its ID in this variable.
+  ownedSubId = 'ownedSubId';  // Initial string doesn't match any ID.
+
   constructor(
     private navCtrl: NavController,
     private modalCtrl: ModalController,
@@ -61,6 +65,7 @@ export class AdminuiPage implements OnInit {
     private file: File,
     private storageService: LocalStorageService,
     private iapService: InAppPurchasesService,
+    private store: InAppPurchase2,
   ) { }
 
   async ngOnInit() {
@@ -108,48 +113,77 @@ export class AdminuiPage implements OnInit {
     });
 
 
-    this.checkSubscription();
+    // If StoreTestAccount, don't set any subscriptions. Contingent is set in firebase.
+    if(this.customerBranch === this.globalFunctions.STORE_TEST_ACCOUNT.BRANCH) {
+      // Set contingent in firebase!
+    } else {
+      /*this.iapService.registerProducts();
+      this.iapService.setupListeners();
+      this.iapService.restore();*/
+      this.checkSubscription();
+    }
   }
 
   ionViewDidLeave() {
     this.subIdSubscription.unsubscribe();
+
+    //this.iapService.turnOff();
+  }
+
+  ionViewDidEnter() {
+    this.checkSubscription();
   }
 
 
 
   // Check if products updated (which subscription) and update parameters.
   checkSubscription() {
-    this.iapService.setupListeners();
-
+    // Observe subscription ID.
     this.subIdSubscription = this.iapService.getSubIdState().subscribe(subId => {
-      alert(subId + '\nUpdate');
-      // If cancelled, update config parameters to Business Standard.
-      const updateConfigBranch = {};
-      if(subId === this.iapService.SUB.STARTER.ID) {
-        updateConfigBranch['numberUser'] = 1;
-        updateConfigBranch['dataHistory'] = 42;
-        updateConfigBranch['subscription'] = 'clockin.business.starter';
-      }
-      else if(subId === this.iapService.SUB.STANDARD_MONTH.ID || subId === this.iapService.SUB.STANDARD_ANNUAL.ID) {
-        // 5 users and 90 days
-        updateConfigBranch['dataHistory'] = 90;
-        updateConfigBranch['numberUser'] = 5;
-        updateConfigBranch['subscription'] = subId;
-      }
-      else if(subId === this.iapService.SUB.PLUS_MONTH.ID || subId === this.iapService.SUB.PLUS_ANNUAL.ID) {
-        // 20 users and 365 days
-        updateConfigBranch['dataHistory'] = 365;
-        updateConfigBranch['numberUser'] = 20;
-        updateConfigBranch['subscription'] = subId;
-      }
-      else if(subId === this.iapService.SUB.ENTERPRISE_MONTH.ID || subId === this.iapService.SUB.ENTERPRISE_ANNUAL.ID) {
-        // 50 users and unlimited days (100.000 days)
-        updateConfigBranch['dataHistory'] = this.iapService.UNLIMITED_HISTORY;
-        updateConfigBranch['numberUser'] = 50;
-        updateConfigBranch['subscription'] = subId;
-      }
+      //alert(subId);
+      // If subscription ID changed, update config branch.
+      if(this.ownedSubId !== subId && subId !== '') {
+        this.ownedSubId = subId;
+        const arrowFunction = () => {};
+        const alertInfo: AlertInfo = {
+          header: 'Abo abgeschlossen',
+          subHeader: '',
+          message: `Sie haben ein neues Abo abgeschlossen: ${this.ownedSubId}
+                    \n\nIm Menü unter Info > Über diese App sehen Sie Ihr neues Kontingent!`,
+        };
+        //this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
 
-      update(this.dbRefConfig, updateConfigBranch);
+        // If cancelled, update config parameters to Business Starter.
+        const updateConfigBranch = {};
+        if(subId === this.iapService.SUB.STARTER.ID) {
+          updateConfigBranch['numberUser'] = 1;
+          updateConfigBranch['dataHistory'] = 42;
+          updateConfigBranch['subscription'] = 'clockin.business.starter';
+        }
+        else if(subId === this.iapService.SUB.STANDARD_MONTH.ID || subId === this.iapService.SUB.STANDARD_ANNUAL.ID) {
+          // 5 users and 90 days
+          updateConfigBranch['dataHistory'] = 90;
+          updateConfigBranch['numberUser'] = 5;
+          updateConfigBranch['subscription'] = subId;
+        }
+        else if(subId === this.iapService.SUB.PLUS_MONTH.ID || subId === this.iapService.SUB.PLUS_ANNUAL.ID) {
+          // 20 users and 365 days
+          updateConfigBranch['dataHistory'] = 365;
+          updateConfigBranch['numberUser'] = 20;
+          updateConfigBranch['subscription'] = subId;
+        }
+        else if(subId === this.iapService.SUB.ENTERPRISE_MONTH.ID || subId === this.iapService.SUB.ENTERPRISE_ANNUAL.ID) {
+          // 50 users and unlimited days (100.000 days)
+          updateConfigBranch['dataHistory'] = this.iapService.UNLIMITED_HISTORY;
+          updateConfigBranch['numberUser'] = 50;
+          updateConfigBranch['subscription'] = subId;
+        }
+
+        update(this.dbRefConfig, updateConfigBranch).then(() => {
+          // If successfully updated, unsubscribe store listeners.
+          //this.iapService.turnOff();
+        });
+      }
     });
   }
 

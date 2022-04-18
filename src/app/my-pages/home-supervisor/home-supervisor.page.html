@@ -7,18 +7,26 @@
   </ion-toolbar>
 </ion-header>
 
+<!--
+  Not necessary since Version 3.1.0. When using Apple/Google Sign In, just sign in without using password.
+  Thus, no login form necessary.
+-->
+<!--
 <ion-content class="ion-padding">
   <form [formGroup]="formGroup" (ngSubmit)="login2Supervisor()">
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Kontoname</ion-label>
-      <ion-input [disabled]="true" formControlName="supervisorEmailCtrl" type="text"></ion-input>
+      <ion-input [disabled]="false" formControlName="supervisorEmailCtrl" type="text"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.supervisorEmailCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.supervisorEmailCtrl.errors?.email">{{valError.EMAIL}}</span>
 
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Passwort</ion-label>
-      <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
       <ion-input formControlName="supervisorPasswordCtrl" type="password" (keyup.Enter)="login2Supervisor()"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.supervisorPasswordCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.supervisorPasswordCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
 
     <ion-text class="hints">
       Anmeldung erforderlich. Die Anmeldedaten erhalten Sie vom Administrator von Clock-In (Supervisor).
@@ -28,7 +36,7 @@
       Anmelden
       <ion-icon name="log-in-outline" slot="start"></ion-icon>
     </ion-button>
-    <!--<ion-text (click)="passwordForgotten()" class="clickable-text">Passwort vergessen</ion-text>-->
   </form>
   <ion-spinner style=" width: 100%; text-align: center;" [hidden]="!loading" [paused]="!loading"></ion-spinner>
 </ion-content>
+-->

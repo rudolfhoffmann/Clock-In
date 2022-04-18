@@ -8,18 +8,18 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:65083167549:android:56de5beb5b39d7badaeb54",
+        "mobilesdk_app_id": "1:65083167549:android:2578d9f08d535d67daeb54",
         "android_client_info": {
           "package_name": "de.innoapps.clockin"
         }
       },
       "oauth_client": [
         {
-          "client_id": "65083167549-qlonqh96hsp2h11dshfshtapvbmmc6du.apps.googleusercontent.com",
+          "client_id": "65083167549-9dr92kqb9v13hpf0b285dmjju13vrdi3.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "de.innoapps.clockin",
-            "certificate_hash": "940c7ef830cf77c8f18c551daa47437c179fe222"
+            "certificate_hash": "0f522bb204fb3cc9c017eae64ae21ff95587215a"
           }
         },
         {
@@ -38,6 +38,14 @@
             {
               "client_id": "65083167549-ppihs0dpmlpumq08i6ut2bn07bqqjls4.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "65083167549-1mmidpdrp0m7sci1tdtph66q3bjg1hsr.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "de.innoapps.clockin",
+                "app_store_id": "1602801168"
+              }
             }
           ]
         }

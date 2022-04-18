@@ -19,4 +19,26 @@
       </ion-text>
     </ion-item>
   </ion-list>
+
+  <br>
+  <h5>Mein Abo</h5>
+  <ion-item lines="none" class="ion-no-padding">
+    <ion-button class="ion-no-padding" (click)="createChooseSubscriptionPopover()" fill="clear" expand="full">
+      {{subName}}
+    </ion-button>
+  </ion-item>
+  <ion-item lines="none" class="ion-no-padding">
+    <!-- Copy this layout from subscription.component.html and adapt variables!!! -->
+    <ion-text>
+      <ion-text>{{subTotalPrice}}</ion-text>
+      <ion-text *ngIf="subPeriod==='Month' && !isStarter"><br>Monatliche Abrechnung</ion-text>
+      <ion-text *ngIf="subPeriod==='Year' && !isStarter"><br>Jährliche Abrechnung</ion-text>
+      <!--<ion-text *ngIf="!isStarter"><br>{{subTrial}}</ion-text>-->
+      <ion-text><br>{{subDesc}}</ion-text>
+    </ion-text>
+  </ion-item>
+  <ion-button (click)="restorePurchase()" color="primary">
+    Restore
+  </ion-button>
+
 </ion-content>

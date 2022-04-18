@@ -13,6 +13,7 @@ import { UsernameComponent } from 'src/app/my-components/username/username.compo
 import { environment } from 'src/environments/environment';
 
 import { Device } from '@capacitor/device';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-home-scanner',
@@ -32,17 +33,27 @@ export class HomeScannerPage implements OnInit {
 
   dataConfig: any;
 
+  heading = 'Clock-In Scanner';
+  auth4testAccount = false;
+
+  valError: any;
+
   constructor(
     private storageService: LocalStorageService,
     private navCtrl: NavController,
     private popoverCtrl: PopoverController,
     private formBuilder: FormBuilder,  // Object to handle form validation.
     private globalFunctions: GlobalFunctionsService,
+    private actRoute: ActivatedRoute,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       customerBranchCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
+        // Allow characters 0 through 9, a through z, A through Z and space 1 or multiple times (see +).
+        Validators.pattern('^[0-9 A-Za-z]+$'),
       ])],
       branchPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
@@ -58,11 +69,22 @@ export class HomeScannerPage implements OnInit {
   async ionViewDidEnter() {
     this.uuid = (await Device.getId()).uuid;
     this.realtimeDB = getDatabase();
+
     // Read account credentials from local storage.
     await this.getAccountCredentials();
 
-    // Check, if local password and password from DB match.
-    this.checkCredentialMatch();
+    this.actRoute.queryParams.subscribe(params => {
+      this.auth4testAccount = params.testAccount;
+
+      if(this.auth4testAccount) {
+        this.heading = 'Testkonto';
+      }
+      // Try to login with previous stored credentials.
+      else {
+        // Check, if local password and password from DB match.
+        this.checkCredentialMatch();
+      }
+    });
   }
 
 
@@ -87,7 +109,7 @@ export class HomeScannerPage implements OnInit {
           const alertInfo: AlertInfo = {
             header: 'Authentifizierung fehlgeschlagen',
             subHeader: '',
-            message: 'Supervisor-Email und Passwort stimmen nicht überein!',
+            message: 'Kontoname und Passwort stimmen nicht überein!',
           };
           const arrowFunction = () => {
             //this.storageService.logout('/home-scanner', undefined);
@@ -127,7 +149,11 @@ export class HomeScannerPage implements OnInit {
 
 
   openClockInUI() {
-    this.navCtrl.navigateRoot('/clockinui');
+    if(this.auth4testAccount) {
+      this.navCtrl.navigateRoot('/adminui');
+    } else {
+      this.navCtrl.navigateRoot('/clockinui');
+    }
   }
 
 

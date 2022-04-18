@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button></ion-back-button>
     </ion-buttons>
-    <ion-title>Clock-In Scanner</ion-title>
+    <ion-title>{{heading}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -13,14 +13,20 @@
       <ion-label position="floating">Kontoname</ion-label>
       <ion-input formControlName="customerBranchCtrl" type="text"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.customerBranchCtrl.errors?.pattern">{{valError.PATTERN}}</span>
 
     <ion-item class="ion-no-padding">
       <ion-label position="floating">Passwort</ion-label>
       <!-- Form can be submitted my clicking the submit button or by clicking the open-button on the keyboard of password-field. -->
       <ion-input formControlName="branchPasswordCtrl" type="text" (keyup.Enter)="login2Account()"></ion-input>
     </ion-item>
+    <span class="val-error" *ngIf="formGroup.controls.branchPasswordCtrl.errors?.required">{{valError.REQUIRED}}</span>
+    <span class="val-error" *ngIf="formGroup.controls.branchPasswordCtrl.errors?.maxlength">{{valError.MAX_L}}</span>
 
-    <ion-text class="hints">
+    <!-- If this is authentication for test account, then hide this hint. -->
+    <ion-text [hidden]="auth4testAccount" class="hints">
       Anmeldung erforderlich. Die Anmeldedaten erhalten Sie vom Administrator von Clock-In (Supervisor).
       Genauere Information finden Sie unten unter "Wie funktioniert diese App".
     </ion-text>

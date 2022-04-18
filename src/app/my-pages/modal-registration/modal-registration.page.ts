@@ -37,7 +37,7 @@ export class ModalRegistrationPage implements OnInit {
 
   subscriptionChosen = false;
   subId = 'clockin.business.starter';
-  subScriptionName = 'Business Starter';
+  subscriptionName = 'Business Starter';
   subscriptionPeriod: string;
   subscriptionTotalPrice = 0;
 
@@ -46,6 +46,8 @@ export class ModalRegistrationPage implements OnInit {
 
   disableSubscriptions = false;
   subChosenSubscription;
+
+  valError: any;
 
 
   constructor(
@@ -59,29 +61,25 @@ export class ModalRegistrationPage implements OnInit {
     private store: InAppPurchase2,
     private iapService: InAppPurchasesService,
   ) {
+    this.valError = this.globalFunctions.VAL_ERROR;
+
     this.formGroup = this.formBuilder.group({
       // Define validations.
       customerBranchCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
+        // Allow characters 0 through 9, a through z, A through Z and space 1 or multiple times (see +).
+        Validators.pattern('^[0-9 A-Za-z]+$'),
       ])],
       branchPasswordCtrl: ['', Validators.compose([
         Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-      adminPasswordCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-      adminPasswordConfirmCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(20), Validators.required,
-      ])],
-      emailCtrl: ['', Validators.compose([
-        Validators.minLength(1), Validators.maxLength(30), Validators.required, Validators.email,
       ])],
     });
 
     // Subscription
     this.plt.ready().then(() => {
-      this.iapService.registerProducts();
+      /*this.iapService.registerProducts();
       this.iapService.setupListeners();
+      this.iapService.restore();*/
     });
   }
 
@@ -89,10 +87,6 @@ export class ModalRegistrationPage implements OnInit {
     this.realtimeDB = getDatabase();
     this.refDB = ref(this.realtimeDB);
 
-    // Use patchValue() to set only some values. With setValue() all values have to be set.
-    this.formGroup.patchValue({
-      emailCtrl: this.email
-    });
 
     /*
     // If subscription already available (owned status), then only new standard account can be created.
@@ -122,6 +116,8 @@ export class ModalRegistrationPage implements OnInit {
   ionViewDidLeave() {
     // Unsubscribe subscribted/observed BehaviourSubjects, in order to avoid multiple subscriptions.
     this.subChosenSubscription.unsubscribe();
+
+    //this.iapService.turnOff();
   }
 
 
@@ -140,24 +136,12 @@ export class ModalRegistrationPage implements OnInit {
     await popover.onWillDismiss().then(res => {
       if(res !== undefined && res !== null) {
         this.subId = res.data.subId;
-        this.subScriptionName = res.data.subName;
+        this.subscriptionName = res.data.subName;
         this.subscriptionPeriod = res.data.subPeriod;
         this.subscriptionTotalPrice = res.data.subTotalPrice;
         this.subscriptionChosen = true;
       }
     });
-  }
-
-
-  // Validate, that passwords match.
-  matchPassword() {
-    const apw = this.formGroup.get('adminPasswordCtrl').value;
-    const acpw = this.formGroup.get('adminPasswordConfirmCtrl').value;
-    if(apw === acpw) {
-      return true;
-    }
-
-    return false;
   }
 
 
@@ -197,17 +181,9 @@ export class ModalRegistrationPage implements OnInit {
       };
       this.globalFunctions.createInfoAlert(alertInfo, () => {});
     }
-    else if(!this.matchPassword()) {
-      const alertInfo: AlertInfo = {
-        header: 'Fehler',
-        subHeader: '',
-        message: 'Passwörter stimmen nicht überein!',
-      };
-      this.globalFunctions.createInfoAlert(alertInfo, () => {});
-    }
     else {
       this.branchPassword = this.formGroup.get('branchPasswordCtrl').value;
-      this.adminPassword = this.formGroup.get('adminPasswordCtrl').value;
+      this.adminPassword = '';
 
       const aboConfig = {};
       aboConfig[environment.dbConfigBranch] = {
@@ -236,12 +212,14 @@ export class ModalRegistrationPage implements OnInit {
         registerSuccess: true,
         supervisorPassword: this.adminPassword,
         customerBranch: this.customerBranch,
+        supervisorEmail: this.email,
       };
 
       // Subscribe
       // If subscription not for free (business starter), make a purchase.
       if(this.subscriptionTotalPrice > 0) {
-        this.iapService.order(this.subId);
+        const changed = false;
+        await this.iapService.order(this.subId, changed);
         // Wait, until product is approved, verified, finished and owned before leaving registration page.
         /* NOT NECESSARY. WHEN SUPERVISOR LOGS IN TO ADMINUI, A LISTENERS CHECKS FOR OWNED PRODCUTS AND UPDATES PARAMETERS!
         this.store.when('subscription').owned(product => {

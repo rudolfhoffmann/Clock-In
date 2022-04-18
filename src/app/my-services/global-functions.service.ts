@@ -37,7 +37,24 @@ export class GlobalFunctionsService {
   };
 
 
+  VAL_ERROR = {
+    REQUIRED: 'Eingabe erforderlich!',
+    MAX_L: 'Maximale Anzahl an Zeichen überschritten!',
+    MIN_L: 'Minimale Anzahl an Zeichen unterschritten!',
+    ZIPCODE: '5 Ziffern erforderlich!',
+    PATTERN: 'Die Eingabe enthält ungültige Zeichen!',
+    EMAIL: 'E-Mail Format erforderlich: username@domainname',
+  };
 
+
+
+  STORE_TEST_ACCOUNT = {
+    EMAIL: 'test@inno-apps.de',
+    //SUP_PW: 'TestAccount4Store',
+    SUP_PW: '',
+    BRANCH: 'StoreTestAccount',
+    BRANCH_PW: 'StoreTestPW',
+  };
 
   MY_SERVER_URL = 'https://inno-apps.ddns.net/ClockIn/sendmail.php';
 
@@ -363,6 +380,8 @@ export class GlobalFunctionsService {
         };
 
         this.createSimpleAlert(alertInfo, arrowFunction);
+      } else {
+        alert(JSON.stringify(err));
       }
     });
 

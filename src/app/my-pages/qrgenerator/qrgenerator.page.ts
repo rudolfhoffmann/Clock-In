@@ -136,6 +136,8 @@ export class QrgeneratorPage implements OnInit {
 
     this.globalFunctions.writeFileToDevice(subPath, fileName, fileType, blob, successFct);
 
+
+
   }
 
 

@@ -23,6 +23,8 @@ export class ScannerPage implements OnInit {
   timeoutSub;
   intervalSub;
 
+  cameraShown = false;
+
   constructor(
     private qrScanner: QRScanner,
     private navCtrl: NavController,
@@ -96,7 +98,9 @@ export class ScannerPage implements OnInit {
         // start scanning
         const scanSub = this.qrScanner.scan().subscribe((text: string) => {
           // Hide scanner before leaving page.
-          this.qrScanner.hide();
+          this.qrScanner.hide().then(() => {
+            this.cameraShown = false;
+          });
           this.qrScanner.disableLight();
           // Unsubscrbe scanner after scanning.
           scanSub.unsubscribe();
@@ -113,6 +117,8 @@ export class ScannerPage implements OnInit {
 
         // Show camera for scanning.
         this.qrScanner.show().then(() => {
+          this.cameraShown = true;
+
           // When scanner shown, wait for 2 seconds and notify, that qr-code is being searched.
           this.timeoutSub = setTimeout(() => {
             this.showToast('Suche QR-Code');
@@ -183,11 +189,27 @@ export class ScannerPage implements OnInit {
   switchLightOn() {
     this.lightOn = true;
     this.qrScanner.enableLight();
+    this.qrScanner.show();
   }
 
   switchLightOff() {
     this.lightOn = false;
     this.qrScanner.disableLight();
+    this.qrScanner.hide();
+  }
+
+
+  // Workaround for bug: On Android, use qrscanner.hide() to show camera and qrscanner.show() to hide camera.
+  triggerCamera() {
+    if(this.cameraShown) {
+      this.qrScanner.hide().then(() => {
+        this.cameraShown = false;
+      });
+    } else {
+      this.qrScanner.show().then(() => {
+        this.cameraShown = true;
+      });
+    }
   }
 
 }

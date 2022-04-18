@@ -6,8 +6,13 @@ android {
         applicationId "de.innoapps.clockin"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 233
-        versionName "2.3.3"
+        // Issue: You can't roll out this release because it doesn't allow any existing users to
+        // upgrade to the newly added app bundles.
+        // Reason: I got already greater verionCodes (see 3036 -> Version 3.0.36)
+        // Solution: Append 0 to the end of versionCode and if error occurs while uploading bundle
+        // you can increment the last digit (since multiple upload of same bundle code not allowed).
+        versionCode 3210
+        versionName "3.2.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.

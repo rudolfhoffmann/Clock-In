@@ -67,10 +67,12 @@ export class InAppPurchasesService {
     TIME_CONTROL: 'Zeitüberwachung',
   };
 
+  storeHandler;
+
 
   private subChosen: BehaviorSubject<boolean> = new BehaviorSubject(false);
   private subCancelled: BehaviorSubject<boolean> = new BehaviorSubject(false);
-  private subId: BehaviorSubject<string> = new BehaviorSubject('');
+  private subId: BehaviorSubject<string> = new BehaviorSubject(this.SUB.STARTER.ID);
 
   constructor(
     private store: InAppPurchase2,
@@ -90,10 +92,19 @@ export class InAppPurchasesService {
   }
 
 
-  order(id) {
+  order(id, changed) {
     const arrowFunction = () => {};  // Do nothing.
     this.store.order(id).then(product => {
       // Purchase in progress.
+      // If purchase was changed, notify with alert that purchase is in progress.
+      if(changed) {
+        const alertInfo: AlertInfo = {
+          header: 'In Bearbeitung...',
+          subHeader: '',
+          message: `Es kann einige Minuten dauern, bis der Kaufvorgang abgeschlossen ist.`,
+        };
+        this.globalFunctions.createInfoAlert(alertInfo, arrowFunction);
+      }
     }).error(error => {
       const alertInfo: AlertInfo = {
         header: 'Fehler beim Abschließen des Abos',
@@ -139,8 +150,12 @@ export class InAppPurchasesService {
         type: this.store.PAID_SUBSCRIPTION
       });
 
+<<<<<<< HEAD
       this.restore();
     });
+=======
+    //this.restore();
+>>>>>>> temp-branch
   }
 
 
@@ -149,7 +164,16 @@ export class InAppPurchasesService {
   }
 
 
+  turnOff() {
+    // Unsubscripe listeners when leaving page. Register subscription multiple times leads to
+    // chaotical behaviour (calling owned status very often).
+    // Unsubscribing the listeners multiple times is allowed! No Crash.
+    this.store.off(this.storeHandler);
+  }
+
+
   setupListeners() {
+<<<<<<< HEAD
     this.store.ready(() => {
       // eslint-disable-next-line max-len
       this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
@@ -196,6 +220,28 @@ export class InAppPurchasesService {
       });
 
       this.restore();
+=======
+    // eslint-disable-next-line max-len
+    this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
+
+    // Listen to all subscription. Set state for first time of subscription.
+    this.storeHandler = this.store.when('subscription').approved(product => {
+      product.verify();
+    }).verified(product => {
+      product.finish();
+    })/*.owned(product => {
+      // Set next value of subChosen to "true" to notify observer about state.
+      this.subChosen.next(true);
+      // Set product-id.
+      this.subId.next(product.id);
+    })*/.cancelled(() => {
+      this.subCancelled.next(true);
+    }).error(productError => {
+      alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
+    }).owned(product => {
+      // Set observable, to observe subscription ID.
+      this.subId.next(product.id);
+>>>>>>> temp-branch
     });
 
   }

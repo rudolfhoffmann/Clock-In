@@ -1,4 +1,6 @@
-// Google Sign In: https://devdactic.com/capacitor-google-sign-in/
+// Google Sign In:
+// https://devdactic.com/capacitor-google-sign-in/
+// https://enappd.com/blog/implement-google-login-in-ionic-apps-using-firebase/147/
 
 // Apple Sign In using @ionic-native/sign-in-with-apple.
 // Important!!! Go to: App --> Target --> Signing & Capabilities --> Add new capability --> Sign in with Apple
@@ -22,7 +24,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { QRScanner } from '@ionic-native/qr-scanner/ngx';
 import { Storage } from '@ionic/storage-angular';
 import { AppVersion } from '@awesome-cordova-plugins/app-version/ngx';
-import { SignInWithApple }from '@ionic-native/sign-in-with-apple/ngx';
+import { SignInWithApple } from '@ionic-native/sign-in-with-apple/ngx';
 import { InAppPurchase2 } from '@ionic-native/in-app-purchase-2/ngx';
 import { File } from '@ionic-native/file/ngx';
 import { FileOpener } from '@ionic-native/file-opener/ngx';
