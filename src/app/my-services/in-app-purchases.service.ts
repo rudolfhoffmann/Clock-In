@@ -149,13 +149,9 @@ export class InAppPurchasesService {
         id: this.SUB.ENTERPRISE_ANNUAL.ID,
         type: this.store.PAID_SUBSCRIPTION
       });
-
-<<<<<<< HEAD
-      this.restore();
     });
-=======
+
     //this.restore();
->>>>>>> temp-branch
   }
 
 
@@ -173,54 +169,6 @@ export class InAppPurchasesService {
 
 
   setupListeners() {
-<<<<<<< HEAD
-    this.store.ready(() => {
-      // eslint-disable-next-line max-len
-      this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
-
-      // Listen to all subscription. Set state for first time of subscription.
-      this.store.when('subscription').approved(product => {
-        product.verify();
-      }).verified(product => {
-        product.finish();
-      })/*.owned(product => {
-        // Set next value of subChosen to "true" to notify observer about state.
-        this.subChosen.next(true);
-        // Set product-id.
-        this.subId.next(product.id);
-      })*/.cancelled(() => {
-        this.subCancelled.next(true);
-      }).error(productError => {
-        alert('Fehler beim Abonnieren: ' + JSON.stringify(productError));
-      });
-
-      /* Notify, if subscription was updated. */
-      /*this.store.when('subscription').updated(product => {
-        const p1 = this.store.get(this.SUB.STANDARD_MONTH.ID);
-        const p2 = this.store.get(this.SUB.STANDARD_ANNUAL.ID);
-        const p3 = this.store.get(this.SUB.PLUS_MONTH.ID);
-        const p4 = this.store.get(this.SUB.PLUS_ANNUAL.ID);
-        const p5 = this.store.get(this.SUB.ENTERPRISE_MONTH.ID);
-        const p6 = this.store.get(this.SUB.ENTERPRISE_ANNUAL.ID);
-        if(p1.owned || p2.owned || p3.owned || p4.owned || p5.owned || p6.owned) {
-          this.subId.next(product.id);
-        } else {
-          this.subId.next(this.SUB.STARTER.ID);
-        }
-      });*/
-
-      /* Listen only once. */
-      this.store.once('subscription').owned(product => {
-        alert(product.id + ' owned');
-        this.subId.next(product.id);
-      });
-      this.store.once('subscription').updated(product => {
-        alert(product.id + ' updated');
-        //this.subId.next(product.id);
-      });
-
-      this.restore();
-=======
     // eslint-disable-next-line max-len
     this.store.validator = 'https://validator.fovea.cc/v1/validate?appName=de.innoapps.clockin&apiKey=e1d70996-33a4-4616-bd2c-b64ac87a4366';
 
@@ -241,7 +189,6 @@ export class InAppPurchasesService {
     }).owned(product => {
       // Set observable, to observe subscription ID.
       this.subId.next(product.id);
->>>>>>> temp-branch
     });
 
   }
