@@ -124,31 +124,29 @@ export class InAppPurchasesService {
 
 
   registerProducts() {
-    this.store.ready(() => {
-      this.store.register({
-        id: this.SUB.STANDARD_MONTH.ID,
-        type: this.store.PAID_SUBSCRIPTION,
-      });
-      this.store.register({
-        id: this.SUB.STANDARD_ANNUAL.ID,
-        type: this.store.PAID_SUBSCRIPTION
-      });
-      this.store.register({
-        id: this.SUB.PLUS_MONTH.ID,
-        type: this.store.PAID_SUBSCRIPTION,
-      });
-      this.store.register({
-        id: this.SUB.PLUS_ANNUAL.ID,
-        type: this.store.PAID_SUBSCRIPTION
-      });
-      this.store.register({
-        id: this.SUB.ENTERPRISE_MONTH.ID,
-        type: this.store.PAID_SUBSCRIPTION,
-      });
-      this.store.register({
-        id: this.SUB.ENTERPRISE_ANNUAL.ID,
-        type: this.store.PAID_SUBSCRIPTION
-      });
+    this.store.register({
+      id: this.SUB.STANDARD_MONTH.ID,
+      type: this.store.PAID_SUBSCRIPTION,
+    });
+    this.store.register({
+      id: this.SUB.STANDARD_ANNUAL.ID,
+      type: this.store.PAID_SUBSCRIPTION
+    });
+    this.store.register({
+      id: this.SUB.PLUS_MONTH.ID,
+      type: this.store.PAID_SUBSCRIPTION,
+    });
+    this.store.register({
+      id: this.SUB.PLUS_ANNUAL.ID,
+      type: this.store.PAID_SUBSCRIPTION
+    });
+    this.store.register({
+      id: this.SUB.ENTERPRISE_MONTH.ID,
+      type: this.store.PAID_SUBSCRIPTION,
+    });
+    this.store.register({
+      id: this.SUB.ENTERPRISE_ANNUAL.ID,
+      type: this.store.PAID_SUBSCRIPTION
     });
 
     //this.restore();
