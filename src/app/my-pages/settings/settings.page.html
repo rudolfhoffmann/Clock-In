@@ -31,6 +31,7 @@
     <!-- Copy this layout from subscription.component.html and adapt variables!!! -->
     <ion-text>
       <ion-text>{{subTotalPrice}}</ion-text>
+      <!-- Diese Bedingung trifft doch nie ein? subPeriod ist nie Month oder Year? -->
       <ion-text *ngIf="subPeriod==='Month' && !isStarter"><br>Monatliche Abrechnung</ion-text>
       <ion-text *ngIf="subPeriod==='Year' && !isStarter"><br>Jährliche Abrechnung</ion-text>
       <!--<ion-text *ngIf="!isStarter"><br>{{subTrial}}</ion-text>-->
