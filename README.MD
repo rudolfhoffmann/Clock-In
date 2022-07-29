@@ -4,6 +4,8 @@ Push code to GitHub
 git remote add origin https://github.com/rudolfhoffmann/Clock-In.git
 git push -u origin master
 
+nvm use 14.15
+
 -------------------------
 
 Sign Android Bundle
